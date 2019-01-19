@@ -1,4 +1,4 @@
-package edu.wgu.c195.appointments.persistence;
+package edu.wgu.c195.appointments.persistence.configuration;
 
 public interface IConnectionProfile {
     String getDriver();

@@ -1,4 +1,6 @@
-package edu.wgu.c195.appointments.persistence;
+package edu.wgu.c195.appointments.persistence.configuration;
+
+import edu.wgu.c195.appointments.persistence.configuration.IConnectionProfile;
 
 public class MySQLConnectionProfile implements IConnectionProfile {
     private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
