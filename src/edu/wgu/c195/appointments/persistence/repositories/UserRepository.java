@@ -41,23 +41,37 @@ public class UserRepository extends RepositoryBase<User> {
             user.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
             user.setLastUpdatedBy(resultSet.getString("lastUpdatedBy"));
         }
+        queryStatement.close();
         return user;
     }
 
     @Override
     public void add(User entity) throws SQLException {
-        String insertSqlStr = "INSERT INTO user (userName, password, active, createBy, createDate, lastUpdate, lastUpdatedBy) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String lastIdQueryStr = "SELECT userId FROM user ORDER BY userId DESC LIMIT 1";
+        String insertSqlStr = "INSERT INTO user (userId, userName, password, active, createBy, createDate, lastUpdate, lastUpdatedBy) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         super.startTransaction();
+        PreparedStatement queryStatement = super.connection.prepareStatement(lastIdQueryStr);
         PreparedStatement insertStatement = super.connection.prepareStatement(insertSqlStr);
-        insertStatement.setString(1, entity.getUserName());
-        insertStatement.setString(2, entity.getPassword());
-        insertStatement.setByte(3, entity.getActive());
-        insertStatement.setString(4, entity.getCreateBy());
-        insertStatement.setDate(5, entity.getCreateDate());
-        insertStatement.setTimestamp(6, entity.getLastUpdate());
-        insertStatement.setString(7, entity.getLastUpdatedBy());
+        ResultSet resultSet = queryStatement.executeQuery();
+        if(resultSet.next()) {
+            entity.setUserId(resultSet.getInt("userId") + 1);
+        } else {
+            entity.setUserId(1);
+        }
+        insertStatement.setInt(1, entity.getUserId());
+        insertStatement.setString(2, entity.getUserName());
+        insertStatement.setString(3, entity.getPassword());
+        insertStatement.setByte(4, entity.getActive());
+        insertStatement.setString(5, entity.getCreateBy());
+        insertStatement.setDate(6, entity.getCreateDate());
+        insertStatement.setTimestamp(7, entity.getLastUpdate());
+        insertStatement.setString(8, entity.getLastUpdatedBy());
         int recordsUpdated = insertStatement.executeUpdate();
+
+        queryStatement.close();
+        insertStatement.close();
     }
 
     @Override
@@ -79,6 +93,7 @@ public class UserRepository extends RepositoryBase<User> {
         updateStatement.setString(5, entity.getLastUpdatedBy());
         updateStatement.setInt(6, entity.getUserId());
         int recordsUpdated = updateStatement.executeUpdate();
+        updateStatement.close();
     }
 
     @Override
@@ -90,6 +105,7 @@ public class UserRepository extends RepositoryBase<User> {
             PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
             deleteStatement.setInt(1, (int) id);
             int recordsUpdated = deleteStatement.executeUpdate();
+            deleteStatement.close();
         }
         return user;
     }
