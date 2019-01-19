@@ -46,16 +46,63 @@ public class ReminderRepository extends RepositoryBase<Reminder> {
 
     @Override
     public void add(Reminder entity) throws SQLException {
-
+        String insertSqlStr = "INSERT INTO reminder (" +
+                                            "reminderDate, " +
+                                            "snoozeIncrement, " +
+                                            "snoozeIncrementTypeId, " +
+                                            "appointmentId, " +
+                                            "createdBy, " +
+                                            "createdDate, " +
+                                            "remindercol) " +
+                                    "VALUES (" +
+                                            "?, " +
+                                            "?, " +
+                                            "?, " +
+                                            "?, " +
+                                            "?, " +
+                                            "?, " +
+                                            "?)";
+        super.startTransaction();
+        PreparedStatement insertStatement = super.connection.prepareStatement(insertSqlStr);
+        insertStatement.setDate(1, entity.getReminderDate());
+        insertStatement.setInt(2, entity.getSnoozeIncrement());
+        insertStatement.setInt(3, entity.getSnoozeIncrementTypeId());
+        insertStatement.setInt(4, entity.getAppointmentId());
+        insertStatement.setString(5, entity.getCreatedBy());
+        insertStatement.setDate(6, entity.getCreatedDate());
+        insertStatement.setString(7, entity.getRemindercol());
+        int recordsUpdated = insertStatement.executeUpdate();
     }
 
     @Override
     public void update(Reminder entity) throws SQLException {
-
+        String updateSqlStr = "UPDATE reminder " +
+                              "SET " +
+                                "reminderDate = ?, " +
+                                "snoozeIncrement = ?, " +
+                                "snoozeIncrementTypeId = ?, " +
+                                "remindercol = ? " +
+                              "WHERE reminderId = ?";
+        super.startTransaction();
+        PreparedStatement updateStatement = super.connection.prepareStatement(updateSqlStr);
+        updateStatement.setDate(1, entity.getReminderDate());
+        updateStatement.setInt(2, entity.getSnoozeIncrement());
+        updateStatement.setInt(3, entity.getSnoozeIncrementTypeId());
+        updateStatement.setString(4, entity.getRemindercol());
+        updateStatement.setInt(5, entity.getReminderId());
+        int recordsUpdated = updateStatement.executeUpdate();
     }
 
     @Override
     public Reminder delete(Object id) throws SQLException {
-        return null;
+        Reminder reminder = this.get(id);
+        if(reminder != null) {
+            String deleteSqlStr = "DELETE FROM reminder WHERE reminderId = ?";
+            super.startTransaction();
+            PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
+            deleteStatement.setInt(1, (int) id);
+            int recordsUpdated = deleteStatement.executeUpdate();
+        }
+        return reminder;
     }
 }

@@ -84,8 +84,7 @@ public class UserRepository extends RepositoryBase<User> {
     @Override
     public User delete(Object id) throws SQLException {
         User user = get(id);
-        if(user != null)
-        {
+        if(user != null) {
             String deleteSqlStr = "DELETE FROM user WHERE userId = ? ";
             super.startTransaction();
             PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);

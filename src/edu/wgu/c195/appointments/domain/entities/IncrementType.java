@@ -1,14 +1,14 @@
 package edu.wgu.c195.appointments.domain.entities;
 
-public class IncrementTypes {
+public class IncrementType {
     private int incrementTypeId;
     private String incrementTypeDescription;
 
-    public IncrementTypes() {
+    public IncrementType() {
 
     }
 
-    public IncrementTypes(int incrementTypeId, String incrementTypeDescription) {
+    public IncrementType(int incrementTypeId, String incrementTypeDescription) {
         this.incrementTypeId = incrementTypeId;
         this.incrementTypeDescription = incrementTypeDescription;
     }

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 abstract class RepositoryBase<T> implements IRepository<T>  {
     protected final Connection connection;
-    private boolean transactionStarted = false;
+    private boolean transactionStarted;
 
     protected RepositoryBase(Connection connection) {
         this.connection = connection;
@@ -22,5 +22,6 @@ abstract class RepositoryBase<T> implements IRepository<T>  {
     public void save() throws SQLException {
         this.connection.commit();
         this.connection.setAutoCommit(false);
+        this.transactionStarted = false;
     }
 }
