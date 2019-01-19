@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fa09606-d8df-4019-8557-deb33cbbc248" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -33,10 +32,9 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="154">
-                  <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+                <state relative-caret-position="110">
+                  <caret line="5" column="34" lean-forward="true" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
                   <folding>
-                    <element signature="imports" expanded="true" />
                     <element signature="e#259#260#0" expanded="true" />
                     <element signature="e#292#293#0" expanded="true" />
                     <element signature="e#0#123#1" />
@@ -61,9 +59,10 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="88">
-                  <caret line="4" selection-start-line="4" selection-end-line="7" selection-end-column="29" />
+                <state relative-caret-position="418">
+                  <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
                   <folding>
+                    <element signature="imports" expanded="true" />
                     <element signature="e#278#279#0" expanded="true" />
                     <element signature="e#297#298#0" expanded="true" />
                   </folding>
@@ -181,7 +180,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547927109050" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547927396337" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/mysql-connector-java-8.0.13.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
@@ -246,7 +245,7 @@
       <updated>1547910878272</updated>
       <workItem from="1547910881549" duration="22000" />
       <workItem from="1547911006634" duration="1046000" />
-      <workItem from="1547912125032" duration="14843000" />
+      <workItem from="1547912125032" duration="15431000" />
     </task>
     <task id="LOCAL-00001" summary="Updated project structure and added new entities.">
       <created>1547915689798</created>
@@ -259,7 +258,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15911000" />
+    <option name="totallyTimeSpent" value="16499000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
@@ -780,10 +779,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+        <state relative-caret-position="110">
+          <caret line="5" column="34" lean-forward="true" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#259#260#0" expanded="true" />
             <element signature="e#292#293#0" expanded="true" />
             <element signature="e#0#123#1" />

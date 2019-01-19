@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class UserRepository extends RepositoryBase<User> {
 
-    protected UserRepository(Connection connection) {
+    public UserRepository(Connection connection) {
         super(connection);
     }
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class ReminderRepository extends RepositoryBase<Reminder> {
 
-    protected ReminderRepository(Connection connection) {
+    public ReminderRepository(Connection connection) {
         super(connection);
     }
 
