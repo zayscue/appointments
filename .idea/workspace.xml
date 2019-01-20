@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fa09606-d8df-4019-8557-deb33cbbc248" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CustomerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AddressRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AppointmentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CityRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CountryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,67 +18,46 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="24" selection-start-line="24" selection-end-line="24" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/ConnectionFactory.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="321">
-                  <caret line="25" selection-start-line="25" selection-end-line="25" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-623">
-                  <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#416#417#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CustomerRepository.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="462">
-                  <caret line="124" column="24" selection-start-line="124" selection-start-column="24" selection-end-line="124" selection-end-column="24" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#363#364#0" expanded="true" />
-                    <element signature="e#396#397#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/ConnectionFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret line="61" column="20" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#383#384#0" expanded="true" />
+                <element signature="e#416#417#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -111,20 +93,24 @@
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/data/IRepository.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/data/RepositoryBase.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IRepository.java" />
-        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/ReminderRepository.java" />
-        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java" />
         <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CustomerRepository.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AddressRepository.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CountryRepository.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CityRepository.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AppointmentRepository.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java" />
+        <option value="$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="306" />
-    <option name="y" value="180" />
-    <option name="width" value="1374" />
-    <option name="height" value="797" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="274" />
+    <option name="y" value="23" />
+    <option name="width" value="1406" />
+    <option name="height" value="953" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -197,7 +183,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547940045847" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548018115558" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
@@ -263,7 +249,7 @@
       <workItem from="1547910881549" duration="22000" />
       <workItem from="1547911006634" duration="1046000" />
       <workItem from="1547912125032" duration="15431000" />
-      <workItem from="1547927740857" duration="11238000" />
+      <workItem from="1547927740857" duration="27200000" />
     </task>
     <task id="LOCAL-00001" summary="Updated project structure and added new entities.">
       <created>1547915689798</created>
@@ -276,13 +262,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27737000" />
+    <option name="totallyTimeSpent" value="43699000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="955" extended-state="6" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16605617" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16605617" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -291,8 +277,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3719583" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2510204" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37139562" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.22040816" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -301,7 +287,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32899868" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32969603" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32946634" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -363,6 +349,24 @@
     </ignored-roots>
     <MESSAGE value="Updated project structure and added new entities." />
     <option name="LAST_COMMIT_MESSAGE" value="Updated project structure and added new entities." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java</url>
+          <line>19</line>
+          <properties />
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java</url>
+          <line>27</line>
+          <properties />
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/appointments.iml">
@@ -632,30 +636,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/ConnectionFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="966">
           <caret line="107" column="36" selection-start-line="107" selection-start-column="36" selection-end-line="107" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -669,16 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/domain/entities/IncrementType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -688,7 +662,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/domain/entities/Customer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-531">
+        <state relative-caret-position="15">
           <caret line="9" column="26" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -700,25 +674,106 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AddressRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-623">
-          <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
+        <state relative-caret-position="120">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#416#417#0" expanded="true" />
+            <element signature="e#299#300#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/RepositoryBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/ConnectionFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/ui/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CityRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1680">
+          <caret line="112" selection-start-line="112" selection-end-line="112" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#287#288#0" expanded="true" />
+            <element signature="e#320#321#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/AppointmentRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="55" column="68" lean-forward="true" selection-start-line="55" selection-start-column="68" selection-end-line="55" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#315#316#0" expanded="true" />
+            <element signature="e#348#349#0" expanded="true" />
+            <element signature="e#0#203#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CountryRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1680">
+          <caret line="112" column="23" selection-start-line="112" selection-start-column="23" selection-end-line="112" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#299#300#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <marker date="1547991019227" expanded="true" signature="241:305" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/CustomerRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
+        <state relative-caret-position="579">
           <caret line="124" column="24" selection-start-line="124" selection-start-column="24" selection-end-line="124" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#363#364#0" expanded="true" />
             <element signature="e#396#397#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/wgu/c195/appointments/persistence/repositories/IncrementTypeRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="61" column="20" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#383#384#0" expanded="true" />
+            <element signature="e#416#417#0" expanded="true" />
           </folding>
         </state>
       </provider>
