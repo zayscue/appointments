@@ -16,24 +16,27 @@ import java.util.ResourceBundle;
 
 public class AppointmentsUI extends Application {
 
-    private final Locale[] supportedLocales = {
+    private static final Locale[] SUPPORTED_LOCALES = {
             new Locale("es"),
             Locale.GERMAN,
             Locale.ENGLISH
     };
 
-    private ResourceBundle labels;
+    public final static ResourceBundle Resources;
 
-    @Override
-    public void start(Stage stage) throws IOException, UnsupportedLocaleException {
+    static {
         Locale currentLocale = Locale.getDefault();
-        boolean supportedLocale = Arrays.stream(supportedLocales)
+        boolean supportedLocale = Arrays.stream(SUPPORTED_LOCALES)
                 .anyMatch(locale -> locale.getLanguage().equals(currentLocale.getLanguage()));
         if(!supportedLocale) {
             throw new UnsupportedLocaleException(currentLocale);
         }
-        this.labels = ResourceBundle.getBundle("LabelsBundle", currentLocale);
-        String windowTitle = labels.getString("windowTitle");
+        Resources = ResourceBundle.getBundle("LabelsBundle", currentLocale);
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException, UnsupportedLocaleException {
+        String windowTitle = AppointmentsUI.Resources.getString("windowTitle");
         Parent root = FXMLLoader.load(getClass().getResource("./login/LoginView.fxml"));
         stage.setTitle(windowTitle);
         stage.setScene(new Scene(root, 640, 480));
