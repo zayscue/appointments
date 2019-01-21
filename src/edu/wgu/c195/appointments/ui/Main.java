@@ -15,8 +15,11 @@ public class Main {
         IRepository<IncrementType> repository = new IncrementTypeRepository(connection);
         try {
             IncrementType incrementType = new IncrementType();
+            IncrementType incrementType2 = new IncrementType();
             incrementType.setIncrementTypeDescription("Test Type 1");
+            incrementType2.setIncrementTypeDescription("Test Type 2");
             repository.add(incrementType);
+            repository.add(incrementType2);
             repository.save();
             incrementType = repository.get(1);
             incrementType.setIncrementTypeDescription("Updated Test Type 1");

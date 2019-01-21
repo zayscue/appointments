@@ -1,10 +1,15 @@
 package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.IncrementType;
+import edu.wgu.c195.appointments.persistence.ConnectionFactory;
 
 import java.sql.*;
 
 public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
+
+    public IncrementTypeRepository() {
+        super(ConnectionFactory.getConnection());
+    }
 
     public IncrementTypeRepository(Connection connection) {
         super(connection);
@@ -17,11 +22,13 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
                                 "FROM incrementtypes " +
                                 "WHERE incrementTypeId = ?";
         PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
         IncrementType incrementType = null;
+
         try {
             queryStatement = super.connection.prepareStatement(querySqlStr);
             queryStatement.setInt(1, (int) id);
-            ResultSet resultSet = queryStatement.executeQuery();
+            resultSet = queryStatement.executeQuery();
             if(resultSet.next()) {
                 incrementType = new IncrementType();
 
@@ -34,6 +41,9 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
             if(queryStatement != null) {
                 queryStatement.close();
             }
+            if(resultSet != null) {
+                resultSet.close();
+            }
         }
         return incrementType;
     }
@@ -43,13 +53,14 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
         String lastIdQueryStr = "SELECT incrementTypeId FROM incrementtypes ORDER BY incrementTypeId DESC LIMIT 1;";
         String insertSqlStr = "INSERT INTO incrementtypes (incrementTypeId, incrementTypeDescription) VALUES (?, ?);";
         PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
         PreparedStatement insertStatement = null;
 
         try {
             super.startTransaction();
             queryStatement = super.connection.prepareStatement(lastIdQueryStr);
             insertStatement = super.connection.prepareStatement(insertSqlStr);
-            ResultSet resultSet = queryStatement.executeQuery();
+            resultSet = queryStatement.executeQuery();
             if(resultSet.next()) {
                 entity.setIncrementTypeId(resultSet.getInt("incrementTypeId") + 1);
             } else {
@@ -67,6 +78,9 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
             if(insertStatement != null) {
                 insertStatement.close();
             }
+            if(resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 
@@ -76,12 +90,21 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
                               "SET " +
                                 "incrementTypeDescription = ? " +
                               "WHERE incrementTypeId = ?";
-        super.startTransaction();
-        PreparedStatement updateStatement = super.connection.prepareStatement(updateSqlStr);
-        updateStatement.setString(1, entity.getIncrementTypeDescription());
-        updateStatement.setInt(2, entity.getIncrementTypeId());
-        int recordsUpdated = updateStatement.executeUpdate();
-        updateStatement.close();
+        PreparedStatement updateStatement = null;
+
+        try {
+            super.startTransaction();
+            updateStatement = super.connection.prepareStatement(updateSqlStr);
+            updateStatement.setString(1, entity.getIncrementTypeDescription());
+            updateStatement.setInt(2, entity.getIncrementTypeId());
+            int recordsUpdated = updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(updateStatement != null) {
+                updateStatement.close();
+            }
+        }
     }
 
     @Override
@@ -89,11 +112,20 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
         IncrementType incrementType = get(id);
         if(incrementType != null) {
             String deleteSqlStr = "DELETE FROM incrementtypes WHERE incrementTypeId = ?";
-            super.startTransaction();
-            PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
-            deleteStatement.setInt(1, (int) id);
-            int recordsUpdated = deleteStatement.executeUpdate();
-            deleteStatement.close();
+            PreparedStatement deleteStatement = null;
+
+            try {
+                super.startTransaction();
+                deleteStatement = super.connection.prepareStatement(deleteSqlStr);
+                deleteStatement.setInt(1, (int) id);
+                int recordsUpdated = deleteStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw e;
+            } finally {
+                if(deleteStatement != null) {
+                    deleteStatement.close();
+                }
+            }
         }
         return incrementType;
     }

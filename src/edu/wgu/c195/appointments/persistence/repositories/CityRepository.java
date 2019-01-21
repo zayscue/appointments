@@ -1,6 +1,7 @@
 package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.City;
+import edu.wgu.c195.appointments.persistence.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CityRepository extends RepositoryBase<City> {
+
+    public CityRepository() {
+        super(ConnectionFactory.getConnection());
+    }
+
     public CityRepository(Connection connection) {
         super(connection);
     }
@@ -23,23 +29,35 @@ public class CityRepository extends RepositoryBase<City> {
                                     "lastUpdateBy " +
                                 "FROM city " +
                                 "WHERE cityId = ?;";
-
-        PreparedStatement queryStatement = super.connection.prepareStatement(querySqlStr);
-        queryStatement.setInt(1, (int) id);
-        ResultSet resultSet = queryStatement.executeQuery();
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
         City city = null;
-        if(resultSet.next()) {
-            city = new City();
 
-            city.setCityId(resultSet.getInt("cityId"));
-            city.setCity(resultSet.getString("city"));
-            city.setCountryId(resultSet.getInt("countryId"));
-            city.setCreateDate(resultSet.getDate("createDate"));
-            city.setCreatedBy(resultSet.getString("createdBy"));
-            city.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
-            city.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+        try {
+            queryStatement = super.connection.prepareStatement(querySqlStr);
+            queryStatement.setInt(1, (int) id);
+            resultSet = queryStatement.executeQuery();
+            if(resultSet.next()) {
+                city = new City();
+
+                city.setCityId(resultSet.getInt("cityId"));
+                city.setCity(resultSet.getString("city"));
+                city.setCountryId(resultSet.getInt("countryId"));
+                city.setCreateDate(resultSet.getDate("createDate"));
+                city.setCreatedBy(resultSet.getString("createdBy"));
+                city.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
+                city.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(resultSet != null) {
+                resultSet.close();
+            }
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
         }
-        queryStatement.close();
 
         return city;
     }
@@ -61,27 +79,41 @@ public class CityRepository extends RepositoryBase<City> {
                                                 "?, " +
                                                 "?, " +
                                                 "?);";
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
+        PreparedStatement insertStatement = null;
 
-        super.startTransaction();
-        PreparedStatement queryStatement = super.connection.prepareStatement(lastIdQuerySqlStr);
-        PreparedStatement insertStatement = super.connection.prepareStatement(insertSqlStr);
-        ResultSet resultSet = queryStatement.executeQuery();
-        if(resultSet.next()) {
-            entity.setCityId(resultSet.getInt("cityId") + 1);
-        } else {
-            entity.setCityId(1);
+        try {
+            super.startTransaction();
+            queryStatement = super.connection.prepareStatement(lastIdQuerySqlStr);
+            insertStatement = super.connection.prepareStatement(insertSqlStr);
+            resultSet = queryStatement.executeQuery();
+            if(resultSet.next()) {
+                entity.setCityId(resultSet.getInt("cityId") + 1);
+            } else {
+                entity.setCityId(1);
+            }
+            insertStatement.setInt(1, entity.getCityId());
+            insertStatement.setString(2, entity.getCity());
+            insertStatement.setInt(3, entity.getCountryId());
+            insertStatement.setDate(4, entity.getCreateDate());
+            insertStatement.setString(5, entity.getCreatedBy());
+            insertStatement.setTimestamp(6, entity.getLastUpdate());
+            insertStatement.setString(7, entity.getLastUpdateBy());
+            int recordsUpdated = insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(resultSet != null) {
+                resultSet.close();
+            }
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
+            if(insertStatement != null) {
+                insertStatement.close();
+            }
         }
-        insertStatement.setInt(1, entity.getCityId());
-        insertStatement.setString(2, entity.getCity());
-        insertStatement.setInt(3, entity.getCountryId());
-        insertStatement.setDate(4, entity.getCreateDate());
-        insertStatement.setString(5, entity.getCreatedBy());
-        insertStatement.setTimestamp(6, entity.getLastUpdate());
-        insertStatement.setString(7, entity.getLastUpdateBy());
-        insertStatement.executeUpdate();
-
-        queryStatement.close();
-        insertStatement.close();
     }
 
     @Override
@@ -92,17 +124,24 @@ public class CityRepository extends RepositoryBase<City> {
                                     "lastUpdate = ?, " +
                                     "lastUpdateBy = ? " +
                                 "WHERE cityId = ?;";
+        PreparedStatement updateStatement = null;
 
-        super.startTransaction();
-        PreparedStatement updateStatement = super.connection.prepareStatement(updateSqlStr);
-        updateStatement.setString(1, entity.getCity());
-        updateStatement.setInt(2, entity.getCountryId());
-        updateStatement.setTimestamp(3, entity.getLastUpdate());
-        updateStatement.setString(4, entity.getLastUpdateBy());
-        updateStatement.setInt(5, entity.getCityId());
-        updateStatement.executeUpdate();
-
-        updateStatement.close();
+        try {
+            super.startTransaction();
+            updateStatement = super.connection.prepareStatement(updateSqlStr);
+            updateStatement.setString(1, entity.getCity());
+            updateStatement.setInt(2, entity.getCountryId());
+            updateStatement.setTimestamp(3, entity.getLastUpdate());
+            updateStatement.setString(4, entity.getLastUpdateBy());
+            updateStatement.setInt(5, entity.getCityId());
+            int recordsUpdated = updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(updateStatement != null) {
+                updateStatement.close();
+            }
+        }
     }
 
     @Override
@@ -110,13 +149,20 @@ public class CityRepository extends RepositoryBase<City> {
         City city = this.get(id);
         if(city != null) {
             String deleteSqlStr = "DELETE FROM city WHERE cityId = ?;";
+            PreparedStatement deleteStatement = null;
 
-            super.startTransaction();
-            PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
-            deleteStatement.setInt(1, (int) id);
-            deleteStatement.executeUpdate();
-
-            deleteStatement.close();
+            try {
+                super.startTransaction();
+                deleteStatement = super.connection.prepareStatement(deleteSqlStr);
+                deleteStatement.setInt(1, (int) id);
+                int recordsUpdated = deleteStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw e;
+            } finally {
+                if(deleteStatement != null) {
+                    deleteStatement.close();
+                }
+            }
         }
         return city;
     }

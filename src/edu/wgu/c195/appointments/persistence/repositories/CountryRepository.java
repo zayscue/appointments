@@ -1,6 +1,7 @@
 package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Country;
+import edu.wgu.c195.appointments.persistence.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CountryRepository extends RepositoryBase<Country> {
+
+    public CountryRepository() {
+        super(ConnectionFactory.getConnection());
+    }
+
     public CountryRepository(Connection connection) {
         super(connection);
     }
@@ -22,23 +28,35 @@ public class CountryRepository extends RepositoryBase<Country> {
                                     "lastUpdateBy " +
                                 "FROM country " +
                                 "WHERE countryId = ?;";
-
-        PreparedStatement queryStatement = super.connection.prepareStatement(querySqlStr);
-        queryStatement.setInt(1, (int) id);
-        ResultSet resultSet = queryStatement.executeQuery();
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
         Country country = null;
-        if(resultSet.next()) {
-            country = new Country();
 
-            country.setCountryId(resultSet.getInt("countryId"));
-            country.setCountry(resultSet.getString("country"));
-            country.setCreateDate(resultSet.getDate("createDate"));
-            country.setCreatedBy(resultSet.getString("createdBy"));
-            country.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
-            country.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+        try {
+            queryStatement = super.connection.prepareStatement(querySqlStr);
+            queryStatement.setInt(1, (int) id);
+            resultSet = queryStatement.executeQuery();
+            country = null;
+            if(resultSet.next()) {
+                country = new Country();
+
+                country.setCountryId(resultSet.getInt("countryId"));
+                country.setCountry(resultSet.getString("country"));
+                country.setCreateDate(resultSet.getDate("createDate"));
+                country.setCreatedBy(resultSet.getString("createdBy"));
+                country.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
+                country.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
+            if(resultSet != null) {
+                resultSet.close();
+            }
         }
-        queryStatement.close();
-
         return country;
     }
 
@@ -57,26 +75,40 @@ public class CountryRepository extends RepositoryBase<Country> {
                                                     "?, " +
                                                     "?, " +
                                                     "?);";
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
+        PreparedStatement insertStatement = null;
 
-        super.startTransaction();
-        PreparedStatement queryStatement = super.connection.prepareStatement(lastIdQuerySqlStr);
-        PreparedStatement insertStatement = super.connection.prepareStatement(insertSqlStr);
-        ResultSet resultSet = queryStatement.executeQuery();
-        if(resultSet.next()) {
-            entity.setCountryId(resultSet.getInt("countryId") + 1);
-        } else {
-            entity.setCountryId(1);
+        try {
+            super.startTransaction();
+            queryStatement = super.connection.prepareStatement(lastIdQuerySqlStr);
+            insertStatement = super.connection.prepareStatement(insertSqlStr);
+            resultSet = queryStatement.executeQuery();
+            if(resultSet.next()) {
+                entity.setCountryId(resultSet.getInt("countryId") + 1);
+            } else {
+                entity.setCountryId(1);
+            }
+            insertStatement.setInt(1, entity.getCountryId());
+            insertStatement.setString(2, entity.getCountry());
+            insertStatement.setDate(3, entity.getCreateDate());
+            insertStatement.setString(4, entity.getCreatedBy());
+            insertStatement.setTimestamp(5, entity.getLastUpdate());
+            insertStatement.setString(6, entity.getLastUpdateBy());
+            int updatedRecords = insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
+            if(resultSet != null) {
+                resultSet.close();
+            }
+            if(insertStatement != null) {
+                insertStatement.close();
+            }
         }
-        insertStatement.setInt(1, entity.getCountryId());
-        insertStatement.setString(2, entity.getCountry());
-        insertStatement.setDate(3, entity.getCreateDate());
-        insertStatement.setString(4, entity.getCreatedBy());
-        insertStatement.setTimestamp(5, entity.getLastUpdate());
-        insertStatement.setString(6, entity.getLastUpdateBy());
-        insertStatement.executeUpdate();
-
-        queryStatement.close();
-        insertStatement.close();
     }
 
     @Override
@@ -86,16 +118,23 @@ public class CountryRepository extends RepositoryBase<Country> {
                                     "lastUpdate = ?, " +
                                     "lastUpdateBy = ? " +
                                 "WHERE countryId = ?;";
+        PreparedStatement updateStatement = null;
 
-        super.startTransaction();
-        PreparedStatement updateStatement = super.connection.prepareStatement(updateSqlStr);
-        updateStatement.setString(1, entity.getCountry());
-        updateStatement.setTimestamp(2, entity.getLastUpdate());
-        updateStatement.setString(3, entity.getLastUpdateBy());
-        updateStatement.setInt(4, entity.getCountryId());
-        updateStatement.executeUpdate();
-
-        updateStatement.close();
+        try {
+            super.startTransaction();
+            updateStatement = super.connection.prepareStatement(updateSqlStr);
+            updateStatement.setString(1, entity.getCountry());
+            updateStatement.setTimestamp(2, entity.getLastUpdate());
+            updateStatement.setString(3, entity.getLastUpdateBy());
+            updateStatement.setInt(4, entity.getCountryId());
+            int updatedRecords = updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(updateStatement != null) {
+                updateStatement.close();
+            }
+        }
     }
 
     @Override
@@ -103,12 +142,20 @@ public class CountryRepository extends RepositoryBase<Country> {
         Country country = this.get(id);
         if(country != null) {
             String deleteSqlStr = "DELETE FROM country WHERE countryId = ?;";
-            super.startTransaction();
-            PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
-            deleteStatement.setInt(1, (int) id);
-            deleteStatement.executeUpdate();
+            PreparedStatement deleteStatement = null;
 
-            deleteStatement.close();
+            try {
+                super.startTransaction();
+                deleteStatement = super.connection.prepareStatement(deleteSqlStr);
+                deleteStatement.setInt(1, (int) id);
+                deleteStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw e;
+            } finally {
+                if(deleteStatement != null) {
+                    deleteStatement.close();
+                }
+            }
         }
         return country;
     }

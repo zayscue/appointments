@@ -1,6 +1,7 @@
 package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Customer;
+import edu.wgu.c195.appointments.persistence.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerRepository extends RepositoryBase<Customer> {
+
+    public CustomerRepository() {
+        super(ConnectionFactory.getConnection());
+    }
 
     public CustomerRepository(Connection connection) {
         super(connection);
@@ -25,29 +30,42 @@ public class CustomerRepository extends RepositoryBase<Customer> {
                                     "lastUpdateBy " +
                                 "FROM customer " +
                                 "WHERE customerId = ?;";
-        PreparedStatement queryStatement = super.connection.prepareStatement(querySqlStr);
-        queryStatement.setInt(1, (int) id);
-        ResultSet resultSet = queryStatement.executeQuery();
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
         Customer customer = null;
-        if(resultSet.next()) {
-            customer = new Customer();
 
-            customer.setCustomerId(resultSet.getInt("customerId"));
-            customer.setCustomerName(resultSet.getString("customerName"));
-            customer.setAddressId(resultSet.getInt("addressId"));
-            customer.setActive(resultSet.getBoolean("active"));
-            customer.setCreateDate(resultSet.getDate("createDate"));
-            customer.setCreatedBy(resultSet.getString("createdBy"));
-            customer.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
-            customer.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+        try {
+            queryStatement = super.connection.prepareStatement(querySqlStr);
+            queryStatement.setInt(1, (int) id);
+            resultSet = queryStatement.executeQuery();
+            if(resultSet.next()) {
+                customer = new Customer();
+
+                customer.setCustomerId(resultSet.getInt("customerId"));
+                customer.setCustomerName(resultSet.getString("customerName"));
+                customer.setAddressId(resultSet.getInt("addressId"));
+                customer.setActive(resultSet.getBoolean("active"));
+                customer.setCreateDate(resultSet.getDate("createDate"));
+                customer.setCreatedBy(resultSet.getString("createdBy"));
+                customer.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
+                customer.setLastUpdateBy(resultSet.getString("lastUpdateBy"));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
+            if(resultSet != null) {
+                resultSet.close();
+            }
         }
-        queryStatement.close();
         return customer;
     }
 
     @Override
     public void add(Customer entity) throws SQLException {
-        String lastIdSqlQueryStr = "SELECT customerId FROM customer ORDER BY customerId DESC LIMIT 1";
+        String lastIdQuerySqlStr = "SELECT customerId FROM customer ORDER BY customerId DESC LIMIT 1";
         String insertSqlStr = "INSERT INTO customer (customerId, " +
                                                     "customerName, " +
                                                     "addressId, " +
@@ -64,28 +82,42 @@ public class CustomerRepository extends RepositoryBase<Customer> {
                                                     "?, " +
                                                     "?, " +
                                                     "?);";
+        PreparedStatement queryStatement = null;
+        PreparedStatement insertStatement = null;
+        ResultSet resultSet = null;
 
-        super.startTransaction();
-        PreparedStatement queryStatement = super.connection.prepareStatement(lastIdSqlQueryStr);
-        PreparedStatement insertStatement = super.connection.prepareStatement(insertSqlStr);
-        ResultSet resultSet = queryStatement.executeQuery();
-        if(resultSet.next()) {
-            entity.setCustomerId(resultSet.getInt("customerId") + 1);
-        } else {
-            entity.setCustomerId(1);
+        try {
+            super.startTransaction();
+            queryStatement = super.connection.prepareStatement(lastIdQuerySqlStr);
+            insertStatement = super.connection.prepareStatement(insertSqlStr);
+            resultSet = queryStatement.executeQuery();
+            if(resultSet.next()) {
+                entity.setCustomerId(resultSet.getInt("customerId") + 1);
+            } else {
+                entity.setCustomerId(1);
+            }
+            insertStatement.setInt(1, entity.getCustomerId());
+            insertStatement.setString(2, entity.getCustomerName());
+            insertStatement.setInt(3, entity.getAddressId());
+            insertStatement.setBoolean(4, entity.isActive());
+            insertStatement.setDate(5, entity.getCreateDate());
+            insertStatement.setString(6, entity.getCreatedBy());
+            insertStatement.setTimestamp(7, entity.getLastUpdate());
+            insertStatement.setString(8, entity.getLastUpdateBy());
+            int recordsUpdated = insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(queryStatement != null) {
+                queryStatement.close();
+            }
+            if(insertStatement != null) {
+                insertStatement.close();
+            }
+            if(resultSet != null) {
+                resultSet.close();
+            }
         }
-        insertStatement.setInt(1, entity.getCustomerId());
-        insertStatement.setString(2, entity.getCustomerName());
-        insertStatement.setInt(3, entity.getAddressId());
-        insertStatement.setBoolean(4, entity.isActive());
-        insertStatement.setDate(5, entity.getCreateDate());
-        insertStatement.setString(6, entity.getCreatedBy());
-        insertStatement.setTimestamp(7, entity.getLastUpdate());
-        insertStatement.setString(8, entity.getLastUpdateBy());
-        int recordsUpdated = insertStatement.executeUpdate();
-
-        queryStatement.close();
-        insertStatement.close();
     }
 
     @Override
@@ -97,17 +129,25 @@ public class CustomerRepository extends RepositoryBase<Customer> {
                                     "lastUpdate = ?, " +
                                     "lastUpdateBy = ? " +
                                 "WHERE customerId = ?;";
-        super.startTransaction();
-        PreparedStatement updateStatement = super.connection.prepareStatement(updateSqlStr);
-        updateStatement.setString(1, entity.getCustomerName());
-        updateStatement.setInt(2, entity.getAddressId());
-        updateStatement.setBoolean(3, entity.isActive());
-        updateStatement.setTimestamp(4, entity.getLastUpdate());
-        updateStatement.setString(5, entity.getLastUpdateBy());
-        updateStatement.setInt(6, entity.getCustomerId());
-        updateStatement.executeUpdate();
+        PreparedStatement updateStatement = null;
 
-        updateStatement.close();
+        try {
+            super.startTransaction();
+            updateStatement = super.connection.prepareStatement(updateSqlStr);
+            updateStatement.setString(1, entity.getCustomerName());
+            updateStatement.setInt(2, entity.getAddressId());
+            updateStatement.setBoolean(3, entity.isActive());
+            updateStatement.setTimestamp(4, entity.getLastUpdate());
+            updateStatement.setString(5, entity.getLastUpdateBy());
+            updateStatement.setInt(6, entity.getCustomerId());
+            int updatedRecords = updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(updateStatement != null) {
+                updateStatement.close();
+            }
+        }
     }
 
     @Override
@@ -115,12 +155,20 @@ public class CustomerRepository extends RepositoryBase<Customer> {
         Customer customer = this.get(id);
         if(customer != null) {
             String deleteSqlStr = "DELETE FROM customer WHERE customerId = ?;";
-            super.startTransaction();
-            PreparedStatement deleteStatement = super.connection.prepareStatement(deleteSqlStr);
-            deleteStatement.setInt(1, (int) id);
-            deleteStatement.executeUpdate();
+            PreparedStatement deleteStatement = null;
 
-            deleteStatement.close();
+            try {
+                super.startTransaction();
+                deleteStatement = super.connection.prepareStatement(deleteSqlStr);
+                deleteStatement.setInt(1, (int) id);
+                int updatedRecords = deleteStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw e;
+            } finally {
+                if(deleteStatement != null) {
+                    deleteStatement.close();
+                }
+            }
         }
         return customer;
     }
