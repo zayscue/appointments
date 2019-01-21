@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Country;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class CountryRepository extends RepositoryBase<Country> {
 
@@ -16,6 +18,28 @@ public class CountryRepository extends RepositoryBase<Country> {
 
     public CountryRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<Country> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT countryId, " +
+                            "country, " +
+                            "createDate, " +
+                            "createdBy, " +
+                            "lastUpdate, " +
+                            "lastUpdateBy " +
+                        "FROM country")
+                .map((t) -> {
+                   Country country = new Country();
+                   country.setCountryId(t.asInt("countryId"));
+                   country.setCountry(t.asString("country"));
+                   country.setCreateDate(t.asDate("createDate"));
+                   country.setCreatedBy(t.asString("createdBy"));
+                   country.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                   country.setLastUpdateBy(t.asString("lastUpdateBy"));
+                   return country;
+                });
     }
 
     @Override

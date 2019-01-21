@@ -1,9 +1,12 @@
 package edu.wgu.c195.appointments.persistence.repositories;
 
+import edu.wgu.c195.appointments.domain.Tuple;
 import edu.wgu.c195.appointments.domain.entities.IncrementType;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.*;
+import java.util.stream.Stream;
 
 public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
 
@@ -13,6 +16,17 @@ public class IncrementTypeRepository extends RepositoryBase<IncrementType> {
 
     public IncrementTypeRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<IncrementType> getAll() {
+        return SQL.stream(super.connection, "SELECT incrementTypeId, incrementTypeDescription FROM incrementtypes")
+                .map((t) -> {
+                    IncrementType incrementType = new IncrementType();
+                    incrementType.setIncrementTypeId(t.asInt("incrementTypeId"));
+                    incrementType.setIncrementTypeDescription(t.asString("incrementTypeDescription"));
+                    return incrementType;
+                });
     }
 
     @Override

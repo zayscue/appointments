@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class AppointmentRepository extends RepositoryBase<Appointment> {
 
@@ -16,6 +18,42 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
 
     public AppointmentRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<Appointment> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT appointmentId, " +
+                            "customerId, " +
+                            "title, " +
+                            "description, " +
+                            "location, " +
+                            "contact, " +
+                            "url, " +
+                            "start, " +
+                            "end, " +
+                            "createDate, " +
+                            "createdBy, " +
+                            "lastUpdate, " +
+                            "lastUpdateBy " +
+                        "FROM appointment")
+                .map((t) -> {
+                   Appointment appointment = new Appointment();
+                   appointment.setAppointmentId(t.asInt("appointmentId"));
+                   appointment.setCustomerId(t.asInt("customerId"));
+                   appointment.setTitle(t.asString("title"));
+                   appointment.setDescription(t.asString("description"));
+                   appointment.setLocation(t.asString("location"));
+                   appointment.setContact(t.asString("contact"));
+                   appointment.setUrl(t.asString("url"));
+                   appointment.setStart(t.asDate("start"));
+                   appointment.setEnd(t.asDate("end"));
+                   appointment.setCreateDate(t.asDate("createDate"));
+                   appointment.setCreatedBy(t.asString("createdBy"));
+                   appointment.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                   appointment.setLastUpdateBy(t.asString("lastUpdateBy"));
+                   return appointment;
+                });
     }
 
     @Override

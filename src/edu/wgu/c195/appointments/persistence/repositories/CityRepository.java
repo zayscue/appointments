@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.City;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class CityRepository extends RepositoryBase<City> {
 
@@ -16,6 +18,30 @@ public class CityRepository extends RepositoryBase<City> {
 
     public CityRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<City> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT cityId, " +
+                            "city, " +
+                            "countryId, " +
+                            "createDate, " +
+                            "createdBy, " +
+                            "lastUpdate, " +
+                            "lastUpdateBy " +
+                        "FROM city")
+                .map((t) -> {
+                    City city = new City();
+                    city.setCityId(t.asInt("cityId"));
+                    city.setCity(t.asString("city"));
+                    city.setCountryId(t.asInt("countryId"));
+                    city.setCreateDate(t.asDate("createDate"));
+                    city.setCreatedBy(t.asString("createdBy"));
+                    city.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                    city.setLastUpdateBy(t.asString("lastUpdateBy"));
+                    return city;
+                });
     }
 
     @Override

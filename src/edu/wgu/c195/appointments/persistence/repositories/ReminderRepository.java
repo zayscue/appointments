@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Reminder;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class ReminderRepository extends RepositoryBase<Reminder> {
 
@@ -16,6 +18,32 @@ public class ReminderRepository extends RepositoryBase<Reminder> {
 
     public ReminderRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<Reminder> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT reminderId, " +
+                            "reminderDate, " +
+                            "snoozeIncrement, " +
+                            "snoozeIncrementTypeId, " +
+                            "appointmentId, " +
+                            "createdBy, " +
+                            "createdDate, " +
+                            "remindercol " +
+                    "FROM reminder")
+                .map(t -> {
+                    Reminder reminder = new Reminder();
+                    reminder.setReminderId(t.asInt("reminderId"));
+                    reminder.setReminderDate(t.asDate("reminderDate"));
+                    reminder.setSnoozeIncrement(t.asInt("snoozeIncrement"));
+                    reminder.setSnoozeIncrementTypeId(t.asInt("snoozeIncrementTypeId"));
+                    reminder.setAppointmentId(t.asInt("appointmentId"));
+                    reminder.setCreatedBy(t.asString("createdBy"));
+                    reminder.setCreatedDate(t.asDate("createdDate"));
+                    reminder.setRemindercol(t.asString("remindercol"));
+                    return reminder;
+                });
     }
 
     @Override

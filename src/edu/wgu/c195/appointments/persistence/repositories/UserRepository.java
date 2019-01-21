@@ -2,11 +2,10 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.User;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.stream.Stream;
 
 public class UserRepository extends RepositoryBase<User> {
 
@@ -16,6 +15,23 @@ public class UserRepository extends RepositoryBase<User> {
 
     public UserRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<User> getAll() {
+        return SQL.stream(super.connection, "SELECT userId, userName, password, active, createBy, createDate, lastUpdate, lastUpdatedBy FROM user")
+                .map((t) -> {
+                    User user = new User();
+                    user.setUserId(t.asInt("userId"));
+                    user.setUserName(t.asString("userName"));
+                    user.setPassword(t.asString("password"));
+                    user.setActive(t.asByte("active"));
+                    user.setCreateBy(t.asString("createBy"));
+                    user.setCreateDate(t.asDate("createDate"));
+                    user.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                    user.setLastUpdatedBy(t.asString("lastUpdatedBy"));
+                    return user;
+                });
     }
 
     @Override

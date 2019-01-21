@@ -1,4 +1,8 @@
 package edu.wgu.c195.appointments.domain;
 
-public class TypeTransformer {
+@FunctionalInterface
+public interface TypeTransformer<T,K> {
+
+    K transform(T instance);
+
 }

@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Customer;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class CustomerRepository extends RepositoryBase<Customer> {
 
@@ -16,6 +18,32 @@ public class CustomerRepository extends RepositoryBase<Customer> {
 
     public CustomerRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<Customer> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT customerId, " +
+                            "customerName, " +
+                            "addressId, " +
+                            "active, " +
+                            "createDate, " +
+                            "createdBy, " +
+                            "lastUpdate, " +
+                            "lastUpdateBy " +
+                        "FROM customer")
+                .map((t) -> {
+                   Customer customer = new Customer();
+                   customer.setCustomerId(t.asInt("customerId"));
+                   customer.setCustomerName(t.asString("customerName"));
+                   customer.setAddressId(t.asInt("addressId"));
+                   customer.setActive(t.asBoolean("active"));
+                   customer.setCreateDate(t.asDate("createDate"));
+                   customer.setCreatedBy(t.asString("createdBy"));
+                   customer.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                   customer.setLastUpdateBy(t.asString("lastUpdateBy"));
+                   return customer;
+                });
     }
 
     @Override

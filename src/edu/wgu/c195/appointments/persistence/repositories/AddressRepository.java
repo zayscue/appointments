@@ -2,11 +2,13 @@ package edu.wgu.c195.appointments.persistence.repositories;
 
 import edu.wgu.c195.appointments.domain.entities.Address;
 import edu.wgu.c195.appointments.persistence.ConnectionFactory;
+import edu.wgu.c195.appointments.persistence.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class AddressRepository extends RepositoryBase<Address> {
 
@@ -16,6 +18,36 @@ public class AddressRepository extends RepositoryBase<Address> {
 
     public AddressRepository(Connection connection) {
         super(connection);
+    }
+
+    @Override
+    public Stream<Address> getAll() {
+        return SQL.stream(super.connection,
+                "SELECT addressId, " +
+                            "address, " +
+                            "address2, " +
+                            "cityId, " +
+                            "postalCode, " +
+                            "phone, " +
+                            "createDate, " +
+                            "createdBy, " +
+                            "lastUpdate, " +
+                            "lastUpdateBy " +
+                        "FROM address")
+                .map((t) -> {
+                    Address address = new Address();
+                    address.setAddressId(t.asInt("addressId"));
+                    address.setAddress(t.asString("address"));
+                    address.setAddress2(t.asString("address2"));
+                    address.setCityId(t.asInt("cityId"));
+                    address.setPostalCode(t.asString("postalCode"));
+                    address.setPhone(t.asString("phone"));
+                    address.setCreateDate(t.asDate("createDate"));
+                    address.setCreatedBy(t.asString("createdBy"));
+                    address.setLastUpdate(t.asTimeStamp("lastUpdate"));
+                    address.setLastUpdateBy(t.asString("lastUpdateBy"));
+                    return address;
+                });
     }
 
     @Override
