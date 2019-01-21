@@ -1,6 +1,8 @@
 package edu.wgu.c195.appointments.domain;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +50,7 @@ public class TransformerService {
         registerConversion(Object.class, String.class, Object::toString);
         registerConversion(Character.class, Boolean.class, Transformations::toBoolean);
         registerConversion(Number.class, Boolean.class, Transformations::toBoolean);
+        registerConversion(Timestamp.class, Date.class, (instance -> new Date(instance.getTime())));
     }
 
 
