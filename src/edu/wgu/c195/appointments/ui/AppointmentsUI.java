@@ -37,7 +37,7 @@ public class AppointmentsUI extends Application {
     @Override
     public void start(Stage stage) throws IOException, UnsupportedLocaleException {
         String windowTitle = AppointmentsUI.Resources.getString("windowTitle");
-        Parent root = FXMLLoader.load(getClass().getResource("./login/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./login/LoginView.fxml"), AppointmentsUI.Resources);
         stage.setTitle(windowTitle);
         stage.setScene(new Scene(root, 640, 480));
         stage.show();
