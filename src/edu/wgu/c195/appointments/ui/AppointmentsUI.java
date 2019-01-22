@@ -39,7 +39,7 @@ public class AppointmentsUI extends Application {
         String windowTitle = AppointmentsUI.Resources.getString("windowTitle");
         Parent root = FXMLLoader.load(getClass().getResource("./login/LoginView.fxml"), AppointmentsUI.Resources);
         stage.setTitle(windowTitle);
-        stage.setScene(new Scene(root, 640, 480));
+        stage.setScene(new Scene(root, 1440, 900));
         stage.show();
     }
 
