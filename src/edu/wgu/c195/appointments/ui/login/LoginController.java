@@ -2,13 +2,12 @@ package edu.wgu.c195.appointments.ui.login;
 
 import edu.wgu.c195.appointments.application.UserManager;
 import edu.wgu.c195.appointments.domain.entities.User;
-import edu.wgu.c195.appointments.ui.calendar.FullCalendarController;
-import edu.wgu.c195.appointments.ui.calendar.FullCalendarView;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.YearMonth;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -50,16 +48,8 @@ public class LoginController implements Initializable {
                 if(this.userManager.checkPassword(user, password)) {
                     try {
                         Stage primaryStage = (Stage) this.signBtn.getScene().getWindow();
-
-                        // Sample
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../calendar/FullCalendar.fxml"));
-                        primaryStage.setScene(new Scene(loader.load()));
-                        FullCalendarController controller = loader.getController();
-                        controller.calendarPane.getChildren().add(new FullCalendarView(YearMonth.now()).getView());
-
-                        // Mine
-                        //Parent root = FXMLLoader.load(getClass().getResource("../calendar/CalendarView.fxml"), this.bundle);
-                        //primaryStage.setScene(new Scene(root, 640, 480));
+                        Parent root = FXMLLoader.load(getClass().getResource("../calendar/CalendarView.fxml"), this.bundle);
+                        primaryStage.setScene(new Scene(root, 1440, 900));
                     } catch (IOException e) {
                         return;
                     }
