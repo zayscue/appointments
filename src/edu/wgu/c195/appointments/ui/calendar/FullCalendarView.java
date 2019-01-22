@@ -29,13 +29,12 @@ public class FullCalendarView {
         currentYearMonth = yearMonth;
         // Create the calendar grid pane
         GridPane calendar = new GridPane();
-        calendar.setPrefSize(600, 400);
         calendar.setGridLinesVisible(true);
         // Create rows and columns with anchor panes for the calendar
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 AnchorPaneNode ap = new AnchorPaneNode();
-                ap.setPrefSize(200,200);
+                ap.setPrefSize(200,160);
                 calendar.add(ap,j,i);
                 allCalendarDays.add(ap);
             }
@@ -45,7 +44,6 @@ public class FullCalendarView {
                 new Text("Wednesday"), new Text("Thursday"), new Text("Friday"),
                 new Text("Saturday") };
         GridPane dayLabels = new GridPane();
-        dayLabels.setPrefWidth(600);
         Integer col = 0;
         for (Text txt : dayNames) {
             AnchorPane ap = new AnchorPane();
@@ -88,7 +86,7 @@ public class FullCalendarView {
             ListView<String> tempListView = new ListView<>();
             tempListView.getItems().add("This is a test");
             VBox testVBox = new VBox(txt, tempListView);
-            testVBox.setPrefSize(200, 150);
+            testVBox.setPrefSize(190, 150);
             ap.setDate(calendarDate);
             ap.setTopAnchor(testVBox, 5.0);
             ap.setLeftAnchor(testVBox, 5.0);
