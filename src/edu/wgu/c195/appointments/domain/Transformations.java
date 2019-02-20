@@ -1,5 +1,7 @@
 package edu.wgu.c195.appointments.domain;
 
+import edu.wgu.c195.appointments.domain.exceptions.DataAccessException;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 

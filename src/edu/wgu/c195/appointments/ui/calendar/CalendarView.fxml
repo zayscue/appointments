@@ -19,6 +19,7 @@
             <Button fx:id="previousMonthBtn" onAction="#previousMonth" />
             <Text fx:id="calendarTitle" />
             <Button fx:id="nextMonthBtn" onAction="#nextMonth" />
+            <Button fx:id="customersBtn" onAction="#navigateToManageCustomersView" text="Customers" />
         </HBox>
         <GridPane fx:id="calendarHeader" />
         <GridPane fx:id="calendar" />

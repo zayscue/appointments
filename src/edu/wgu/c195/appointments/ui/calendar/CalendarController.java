@@ -2,19 +2,24 @@ package edu.wgu.c195.appointments.ui.calendar;
 
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.persistence.repositories.AppointmentRepository;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,6 +29,9 @@ import java.util.stream.Collectors;
 
 public class CalendarController implements Initializable {
 
+
+    @FXML
+    private Button customersBtn;
     @FXML
     private Button previousMonthBtn;
     @FXML
@@ -133,5 +141,15 @@ public class CalendarController implements Initializable {
         this.currentYearMonth = this.currentYearMonth.plusMonths(1);
         this.calendarTitle.setText(" " + this.currentYearMonth.getMonth().toString() + " " + String.valueOf(this.currentYearMonth.getYear()) + " ");
         this.populateCalendar();
+    }
+
+    public void navigateToManageCustomersView(ActionEvent actionEvent) {
+        try {
+            Stage primaryStage = (Stage) this.customersBtn.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("../customers/CustomersView.fxml"), this.resources);
+            primaryStage.setScene(new Scene(root, 1440, 900));
+        } catch (IOException e) {
+            return;
+        }
     }
 }

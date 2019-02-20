@@ -1,6 +1,6 @@
 package edu.wgu.c195.appointments.persistence;
 
-import edu.wgu.c195.appointments.domain.DataAccessException;
+import edu.wgu.c195.appointments.domain.exceptions.DataAccessException;
 import edu.wgu.c195.appointments.domain.DefaultTuple;
 import edu.wgu.c195.appointments.domain.Pair;
 import edu.wgu.c195.appointments.domain.Tuple;

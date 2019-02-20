@@ -1,18 +1,18 @@
 package edu.wgu.c195.appointments.ui.login;
 
+import edu.wgu.c195.appointments.application.LoginLogger;
 import edu.wgu.c195.appointments.application.UserManager;
 import edu.wgu.c195.appointments.domain.entities.User;
+import edu.wgu.c195.appointments.domain.exceptions.IncorrectUserNameOrPasswordException;
 
+import edu.wgu.c195.appointments.ui.AppointmentsUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -42,19 +42,36 @@ public class LoginController implements Initializable {
         String userName = this.userNameField.getText();
         String password = this.passwordField.getText();
 
-        if((userName != null && !userName.equals("")) && (password != null && !password.equals(""))) {
-            User user = this.userManager.findByUserName(userName);
-            if(user != null) {
-                if(this.userManager.checkPassword(user, password)) {
-                    try {
+        try
+        {
+            if((userName != null && !userName.equals("")) && (password != null && !password.equals(""))) {
+                User user = this.userManager.findByUserName(userName);
+                if(user != null) {
+                    if(this.userManager.checkPassword(user, password)) {
+                        Thread loggingThread = new Thread(LoginLogger.createLogger(user));
+                        loggingThread.start();
+                        AppointmentsUI.CurrentUser = user;
                         Stage primaryStage = (Stage) this.signBtn.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("../calendar/CalendarView.fxml"), this.bundle);
                         primaryStage.setScene(new Scene(root, 1440, 900));
-                    } catch (IOException e) {
-                        return;
+                    } else {
+                        throw new IncorrectUserNameOrPasswordException();
                     }
+                } else {
+                    throw new IncorrectUserNameOrPasswordException();
                 }
             }
+        }
+        catch(IncorrectUserNameOrPasswordException loginException) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Ooops, there was an error!");
+            alert.setContentText(loginException.getMessage());
+
+            alert.showAndWait();
+        }
+        catch(IOException e) {
+            return;
         }
     }
 

@@ -1,6 +1,6 @@
 package edu.wgu.c195.appointments.persistence;
 
-import edu.wgu.c195.appointments.domain.DataAccessException;
+import edu.wgu.c195.appointments.domain.exceptions.DataAccessException;
 import edu.wgu.c195.appointments.domain.Tuple;
 
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package edu.wgu.c195.appointments.domain;
+package edu.wgu.c195.appointments.domain.exceptions;
 
 import java.sql.SQLException;
 

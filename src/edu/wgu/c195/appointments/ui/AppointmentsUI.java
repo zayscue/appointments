@@ -1,12 +1,11 @@
 package edu.wgu.c195.appointments.ui;
 
-import edu.wgu.c195.appointments.domain.UnsupportedLocaleException;
+import edu.wgu.c195.appointments.domain.entities.User;
+import edu.wgu.c195.appointments.domain.exceptions.UnsupportedLocaleException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +22,7 @@ public class AppointmentsUI extends Application {
     };
 
     public final static ResourceBundle Resources;
+    public static User CurrentUser;
 
     static {
         Locale currentLocale = Locale.getDefault();

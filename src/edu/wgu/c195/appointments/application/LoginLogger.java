@@ -8,13 +8,13 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-public class SignInLogger implements Runnable {
+public class LoginLogger implements Runnable {
 
     private static Logger LOGGER;
 
     static {
         try {
-            FileHandler fileHandler = new FileHandler("appointments_sign_in.log", true);
+            FileHandler fileHandler = new FileHandler("appointments_login.log", true);
             fileHandler.setFormatter(new Formatter() {
                 @Override
                 public String format(LogRecord record) {
@@ -28,7 +28,7 @@ public class SignInLogger implements Runnable {
                     return buffer.toString();
                 }
             });
-            LOGGER = Logger.getLogger("appointments_sign_in");
+            LOGGER = Logger.getLogger("LoginLogger");
             LOGGER.addHandler(fileHandler);
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +37,7 @@ public class SignInLogger implements Runnable {
 
     private final User user;
 
-    public SignInLogger(User user) {
+    public LoginLogger(User user) {
         this.user = user;
     }
 
@@ -47,6 +47,6 @@ public class SignInLogger implements Runnable {
     }
 
     public static Runnable createLogger(final User user) {
-        return new SignInLogger(user);
+        return new LoginLogger(user);
     }
 }
