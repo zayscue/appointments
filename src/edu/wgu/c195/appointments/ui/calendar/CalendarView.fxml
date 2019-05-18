@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ButtonBar?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.calendar.CalendarController">
-    <padding>
-        <Insets top="25" right="20" bottom="10" left="20"/>
-    </padding>
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.calendar.CalendarController">
     <VBox>
-        <HBox fx:id="calendarTitleContainer">
-            <Button fx:id="previousMonthBtn" onAction="#previousMonth" />
-            <Text fx:id="calendarTitle" />
-            <Button fx:id="nextMonthBtn" onAction="#nextMonth" />
-            <Button fx:id="customersBtn" onAction="#navigateToManageCustomersView" text="Customers" />
-        </HBox>
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="20"/>
+        </padding>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="5"/>
+            </padding>
+            <ButtonBar>
+                <buttons>
+                    <Button fx:id="customersBtn" onAction="#navigateToManageCustomersView" text="New Customer" ButtonBar.buttonData="LEFT"  />
+                    <HBox>
+                        <fx:define>
+                            <ToggleGroup fx:id="calendarViewOptions"/>
+                        </fx:define>
+                        <ToggleButton toggleGroup="$calendarViewOptions" text="Week" minWidth="100" />
+                        <ToggleButton toggleGroup="$calendarViewOptions" text="Month" minWidth="100" selected="true" />
+                    </HBox>
+                    <Button text="New Appointment" ButtonBar.buttonData="RIGHT" />
+                </buttons>
+            </ButtonBar>
+            <GridPane>
+                <Button fx:id="previousMonthBtn" onAction="#previousMonth" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Text fx:id="calendarTitle" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" />
+                <Button fx:id="nextMonthBtn" onAction="#nextMonth" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            </GridPane>
+        </VBox>
         <GridPane fx:id="calendarHeader" />
         <GridPane fx:id="calendar" />
     </VBox>

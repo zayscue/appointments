@@ -36,8 +36,8 @@ public class CalendarController implements Initializable {
     private Button previousMonthBtn;
     @FXML
     private Button nextMonthBtn;
-    @FXML
-    private HBox calendarTitleContainer;
+//    @FXML
+//    private HBox calendarTitleContainer;
     @FXML
     private Text calendarTitle;
     @FXML
@@ -68,7 +68,6 @@ public class CalendarController implements Initializable {
     }
 
     private void initializeTitleBar() {
-        this.calendarTitleContainer.setAlignment(Pos.BASELINE_CENTER);
         this.calendarTitle.setText(" " + this.currentYearMonth.getMonth().toString() + " " + String.valueOf(this.currentYearMonth.getYear()) + " ");
     }
 
@@ -85,7 +84,7 @@ public class CalendarController implements Initializable {
         int column = 0;
         for(Text dayName : dayNames) {
             AnchorPane ap = new AnchorPane();
-            ap.setPrefSize(200, 10);
+            ap.setPrefSize(130, 10);
             ap.setBottomAnchor(dayName, 5.0);
             ap.getChildren().add(dayName);
             this.calendarHeader.add(ap, column++, 0);
@@ -97,7 +96,7 @@ public class CalendarController implements Initializable {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 CalendarDayNode ap = new CalendarDayNode();
-                ap.setPrefSize(200,160);
+                ap.setPrefSize(130,110);
                 this.calendar.add(ap,j,i);
                 this.calendarDays.add(ap);
             }
@@ -122,7 +121,7 @@ public class CalendarController implements Initializable {
             Text calendarDateTxt = new Text(String.valueOf(calendarDate.getDayOfMonth()));
             ListView<String> calendarDateAppointments = new ListView<>();
             VBox calendarDateContainer = new VBox(calendarDateTxt, calendarDateAppointments);
-            calendarDateContainer.setPrefSize(190, 150);
+            calendarDateContainer.setPrefSize(120, 100);
             node.setDate(calendarDate);
             node.setTopAnchor(calendarDateContainer, 5.0);
             node.setLeftAnchor(calendarDateContainer, 5.0);
@@ -147,7 +146,7 @@ public class CalendarController implements Initializable {
         try {
             Stage primaryStage = (Stage) this.customersBtn.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("../customers/CustomersView.fxml"), this.resources);
-            primaryStage.setScene(new Scene(root, 1440, 900));
+            primaryStage.setScene(new Scene(root,960, 680));
         } catch (IOException e) {
             return;
         }

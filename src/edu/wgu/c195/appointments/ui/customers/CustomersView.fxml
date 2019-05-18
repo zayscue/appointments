@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="CENTER" hgap="10" prefHeight="900.0" prefWidth="1440.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.customers.CustomersController">
+<GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.customers.CustomersController">
     <VBox alignment="bottom_right" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
       <children>
          <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
