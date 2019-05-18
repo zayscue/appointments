@@ -42,14 +42,14 @@
          <Label text="City" />
          <HBox spacing="20.0">
             <children>
-               <ComboBox fx:id="customerAddressCityComboBox" prefWidth="150.0" />
+               <ComboBox fx:id="customerAddressCityComboBox" onAction="#onChangeCityComboBox" prefWidth="150.0" />
                <TextField fx:id="customerAddressOtherCityTextField" visible="false" />
             </children>
          </HBox>
          <Label fx:id="customerAddressCountryLabel" text="Country" />
          <HBox spacing="20.0">
             <children>
-               <ComboBox fx:id="customerAddressCountryComboBox" prefWidth="150.0" />
+               <ComboBox fx:id="customerAddressCountryComboBox" onAction="#onChangeCountryComboBox" prefWidth="150.0" />
                <TextField fx:id="customerAddressOtherCountryTextField" visible="false" />
             </children>
          </HBox>
