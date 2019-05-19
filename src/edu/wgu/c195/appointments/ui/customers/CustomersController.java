@@ -68,8 +68,6 @@ public class CustomersController implements Initializable {
     @FXML
     private CheckBox customerActiveCheckBox;
     @FXML
-    private Button saveCustomerBtn;
-    @FXML
     private Button backBtn;
     @FXML
     private TableView<Customer> customersTable;

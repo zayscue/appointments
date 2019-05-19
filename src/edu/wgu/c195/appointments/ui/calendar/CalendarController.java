@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +33,8 @@ public class CalendarController implements Initializable {
 
     @FXML
     private Button customersBtn;
+    @FXML
+    private Button newAppointmentBtn;
     @FXML
     private Button previousMonthBtn;
     @FXML
@@ -150,5 +153,17 @@ public class CalendarController implements Initializable {
         } catch (IOException e) {
             return;
         }
+    }
+
+    @FXML
+    private void onNewAppointmentBtnClick(ActionEvent event) throws IOException {
+        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
+        final Stage createEditAppointmentStage = new Stage();
+        createEditAppointmentStage.initModality(Modality.APPLICATION_MODAL);
+        createEditAppointmentStage.initOwner(primaryStage);
+        Parent root = FXMLLoader.load(getClass().getResource("../appointment/AppointmentView.fxml"));
+        createEditAppointmentStage.setTitle("Create/Edit Appointment");
+        createEditAppointmentStage.setScene(new Scene(root, 300, 200));
+        createEditAppointmentStage.show();
     }
 }

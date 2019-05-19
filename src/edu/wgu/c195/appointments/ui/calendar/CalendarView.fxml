@@ -30,7 +30,7 @@
                         <ToggleButton toggleGroup="$calendarViewOptions" text="Week" minWidth="100" />
                         <ToggleButton toggleGroup="$calendarViewOptions" text="Month" minWidth="100" selected="true" />
                     </HBox>
-                    <Button text="New Appointment" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="newAppointmentBtn" text="New Appointment" onAction="#onNewAppointmentBtnClick" ButtonBar.buttonData="RIGHT" />
                 </buttons>
             </ButtonBar>
             <GridPane>
