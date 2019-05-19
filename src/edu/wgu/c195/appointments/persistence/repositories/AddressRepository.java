@@ -185,6 +185,7 @@ public class AddressRepository extends RepositoryBase<Address> {
             updateStatement.setString(5, entity.getPhone());
             updateStatement.setTimestamp(6, entity.getLastUpdate());
             updateStatement.setString(7, entity.getLastUpdateBy());
+            updateStatement.setInt(8, entity.getAddressId());
             int updatedRecords = updateStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;

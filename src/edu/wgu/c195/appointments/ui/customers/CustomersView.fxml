@@ -15,63 +15,71 @@
 <?import javafx.scene.layout.VBox?>
 
 <GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.customers.CustomersController">
-    <VBox alignment="bottom_right" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
-      <children>
-         <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
-           <columns>
-               <TableColumn text="Id" />
-               <TableColumn text="Customer Name" />
-               <TableColumn text="Active" />
-           </columns>
-         </TableView>
-         <HBox alignment="BOTTOM_RIGHT">
-            <children>
-               <Button mnemonicParsing="false" text="Create" />
-               <Button mnemonicParsing="false" text="Delete" />
-            </children>
-         </HBox>
-      </children></VBox>
-    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
-      <children>
-         <Label text="Customer Name" />
-         <TextField fx:id="customerNameTextField" prefWidth="150.0" />
-         <Label text="Street Address" />
-         <TextField fx:id="customerAddressStreetAddress1TextField" />
-         <Label text="Street Address 2" />
-         <TextField fx:id="customerAddressStreetAddress2TextField" />
-         <Label text="City" />
-         <HBox spacing="20.0">
-            <children>
-               <ComboBox fx:id="customerAddressCityComboBox" onAction="#onChangeCityComboBox" prefWidth="150.0" />
-               <TextField fx:id="customerAddressOtherCityTextField" visible="false" />
-            </children>
-         </HBox>
-         <Label fx:id="customerAddressCountryLabel" text="Country" />
-         <HBox spacing="20.0">
-            <children>
-               <ComboBox fx:id="customerAddressCountryComboBox" onAction="#onChangeCountryComboBox" prefWidth="150.0" />
-               <TextField fx:id="customerAddressOtherCountryTextField" visible="false" />
-            </children>
-         </HBox>
-         <Label text="Postal Code" />
-         <TextField fx:id="customerAddressPostalCode" />
-         <Label text="Phone Number" />
-         <TextField fx:id="customerAddressPhoneNumber" />
-         <CheckBox fx:id="customerActiveCheckBox" text="Active" />
-         <Button fx:id="saveCustomerBtn" onAction="#saveCustomerBtnClicked" text="Save" />
-      </children>
-      <padding>
-         <Insets left="10.0" top="10.0" />
-      </padding>
-      <GridPane.margin>
-         <Insets />
-      </GridPane.margin>
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <padding><Insets top="10" right="10" bottom="5" left="10"/></padding>
+        <children>
+            <Button fx:id="backBtn" onAction="#onBackBtnClick" />
+        </children>
+    </HBox>
+    <VBox alignment="bottom_right" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <padding><Insets top="0" right="10" bottom="10" left="10"/></padding>
+        <children>
+            <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
+            </TableView>
+            <HBox spacing="10" alignment="BOTTOM_RIGHT">
+                <children>
+                    <Button mnemonicParsing="false" text="Create" onAction="#onCreateBtnClick" />
+                    <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteBtnClick"/>
+                </children>
+            </HBox>
+        </children>
     </VBox>
-   <columnConstraints>
-      <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
-      <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints fillHeight="true" vgrow="ALWAYS" />
-   </rowConstraints>
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <padding><Insets top="0" right="10" bottom="10" left="10"/></padding>
+        <children>
+            <VBox spacing="10" VBox.vgrow="ALWAYS">
+                <children>
+                    <Label text="Customer Name" />
+                    <TextField fx:id="customerNameTextField" prefWidth="150.0" />
+                    <Label text="Phone Number" />
+                    <TextField fx:id="customerAddressPhoneNumber" />
+                    <Label text="Street Address" />
+                    <TextField fx:id="customerAddressStreetAddress1TextField" />
+                    <Label text="Street Address 2" />
+                    <TextField fx:id="customerAddressStreetAddress2TextField" />
+                    <Label fx:id="customerAddressCountryLabel" text="Country" />
+                    <HBox spacing="20.0">
+                        <children>
+                            <ComboBox fx:id="customerAddressCountryComboBox" onAction="#onChangeCountryComboBox" prefWidth="150.0" />
+                            <TextField fx:id="customerAddressOtherCountryTextField" visible="false" HBox.hgrow="ALWAYS" />
+                        </children>
+                    </HBox>
+                    <Label text="City" />
+                    <HBox spacing="20.0">
+                        <children>
+                            <ComboBox fx:id="customerAddressCityComboBox" onAction="#onChangeCityComboBox" disable="true" prefWidth="150.0" />
+                            <TextField fx:id="customerAddressOtherCityTextField" disable="true" visible="false" HBox.hgrow="ALWAYS" />
+                        </children>
+                    </HBox>
+                    <Label text="Postal Code" />
+                    <TextField fx:id="customerAddressPostalCode" />
+                    <CheckBox fx:id="customerActiveCheckBox" text="Active" />
+                </children>
+            </VBox>
+            <HBox alignment="BOTTOM_RIGHT">
+                <children>
+                    <Button fx:id="saveCustomerBtn" onAction="#saveCustomerBtnClicked" text="Save" />
+                </children>
+            </HBox>
+        </children>
+    </VBox>
+
+    <columnConstraints>
+        <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
+        <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints fillHeight="false" vgrow="NEVER" />
+        <RowConstraints fillHeight="true" vgrow="ALWAYS" />
+    </rowConstraints>
 </GridPane>
