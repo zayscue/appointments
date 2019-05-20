@@ -37,6 +37,7 @@
             <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="endDatePicker" />
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="endTimeTextField" />
         </GridPane>
+        <fx:include fx:id="reminderView" source="../reminder/ReminderView.fxml" />
         <ButtonBar>
             <buttons>
                 <Button fx:id="saveBtn" onAction="#onSaveBtnClicked">Save</Button>
