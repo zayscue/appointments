@@ -1,5 +1,6 @@
 package edu.wgu.c195.appointments.ui.customers;
 
+import edu.wgu.c195.appointments.application.CustomersViewModel;
 import edu.wgu.c195.appointments.domain.entities.Address;
 import edu.wgu.c195.appointments.domain.entities.City;
 import edu.wgu.c195.appointments.domain.entities.Country;
@@ -10,7 +11,6 @@ import edu.wgu.c195.appointments.persistence.repositories.CountryRepository;
 import edu.wgu.c195.appointments.persistence.repositories.CustomerRepository;
 import edu.wgu.c195.appointments.ui.AppointmentsUI;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

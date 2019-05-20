@@ -1,7 +1,9 @@
 package edu.wgu.c195.appointments.domain.entities;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
     private int appointmentId;
@@ -11,8 +13,8 @@ public class Appointment {
     private String location;
     private String contact;
     private String url;
-    private Date start;
-    private Date end;
+    private Timestamp start;
+    private Timestamp end;
     private Date createDate;
     private String createdBy;
     private Timestamp lastUpdate;
@@ -22,7 +24,7 @@ public class Appointment {
 
     }
 
-    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Date start, Date end) {
+    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Timestamp start, Timestamp end) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.title = title;
@@ -34,7 +36,7 @@ public class Appointment {
         this.end = end;
     }
 
-    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Date start, Date end, Date createDate, String createdBy) {
+    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Timestamp start, Timestamp end, Date createDate, String createdBy) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.title = title;
@@ -48,7 +50,7 @@ public class Appointment {
         this.createdBy = createdBy;
     }
 
-    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Date start, Date end, Date createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy) {
+    public Appointment(int appointmentId, int customerId, String title, String description, String location, String contact, String url, Timestamp start, Timestamp end, Date createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.title = title;
@@ -120,19 +122,19 @@ public class Appointment {
         this.url = url;
     }
 
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
@@ -166,5 +168,14 @@ public class Appointment {
 
     public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
+    }
+
+    @Override
+    public String toString() {
+        return this.getTitle()
+                + " "
+                + this.getStart().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mma"))
+                + "-"
+                + this.getEnd().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mma"));
     }
 }

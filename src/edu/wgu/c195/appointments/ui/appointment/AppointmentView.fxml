@@ -6,9 +6,43 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wgu.c195.appointments.ui.appointment.AppointmentController"
-            prefHeight="400.0" prefWidth="600.0">
-<Label>Hello World!</Label>
+            fx:controller="edu.wgu.c195.appointments.ui.appointment.AppointmentController">
+<VBox>
+    <padding><Insets top="10" right="10" bottom="5" left="10"/></padding>
+    <children>
+        <Label text="Title" />
+        <TextField fx:id="titleTextField" />
+        <Label text="Customer" />
+        <ComboBox fx:id="customersComboBox" />
+        <Label text="Location" />
+        <TextField fx:id="locationTextField" />
+        <Label text="Contact" />
+        <TextField fx:id="contactTextField" />
+        <Label text="Url" />
+        <TextField fx:id="urlTextField" />
+        <Label text="Description" />
+        <TextArea fx:id="descriptionTextArea" />
+        <GridPane hgap="10">
+            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Start Date" />
+            <Label GridPane.columnIndex="1" GridPane.rowIndex="0" text="Start Time" />
+            <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="startDatePicker" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="startTimeTextField" />
+        </GridPane>
+        <GridPane hgap="10">
+            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="End Date" />
+            <Label GridPane.columnIndex="1" GridPane.rowIndex="0" text="End Time" />
+            <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="endDatePicker" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="endTimeTextField" />
+        </GridPane>
+        <ButtonBar>
+            <buttons>
+                <Button fx:id="saveBtn" onAction="#onSaveBtnClicked">Save</Button>
+                <Button fx:id="cancelBtn" onAction="#onCancelBtnClicked">Cancel</Button>
+            </buttons>
+        </ButtonBar>
+    </children>
+</VBox>
 </AnchorPane>

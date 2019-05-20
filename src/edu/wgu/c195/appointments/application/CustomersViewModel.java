@@ -1,4 +1,4 @@
-package edu.wgu.c195.appointments.ui.customers;
+package edu.wgu.c195.appointments.application;
 
 import edu.wgu.c195.appointments.domain.entities.Address;
 import edu.wgu.c195.appointments.domain.entities.City;

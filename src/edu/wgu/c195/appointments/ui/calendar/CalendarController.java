@@ -2,7 +2,11 @@ package edu.wgu.c195.appointments.ui.calendar;
 
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.persistence.repositories.AppointmentRepository;
+import edu.wgu.c195.appointments.ui.appointment.AppointmentController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,10 +15,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -122,7 +128,32 @@ public class CalendarController implements Initializable {
                 node.getChildren().remove(0);
             }
             Text calendarDateTxt = new Text(String.valueOf(calendarDate.getDayOfMonth()));
-            ListView<String> calendarDateAppointments = new ListView<>();
+            ListView<Appointment> calendarDateAppointments = new ListView<>();
+            calendarDateAppointments.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent click) {
+                    if (click.getClickCount() >= 2) {
+                        Stage primaryStage = (Stage) calendarDateAppointments.getScene().getWindow();
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../appointment/AppointmentView.fxml"), resources);
+                            launchCreateEditAppointmentStage(primaryStage, loader);
+                            AppointmentController controller = loader.<AppointmentController>getController();
+                            controller.setAppointment(calendarDateAppointments.getSelectionModel().getSelectedItem());
+                        } catch (IOException exception) {
+                            return;
+                        }
+                    }
+                }
+            });
+            LocalDate today = LocalDate.of(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDayOfMonth());
+            ObservableList<Appointment> todaysAppointments = this.currentMonthsAppointments
+                    .stream()
+                    .filter(appointment -> {
+                        LocalDate startLocalDate = new java.sql.Date(appointment.getStart().getTime()).toLocalDate();
+                        return today.equals(startLocalDate);
+                    })
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            calendarDateAppointments.setItems(todaysAppointments);
             VBox calendarDateContainer = new VBox(calendarDateTxt, calendarDateAppointments);
             calendarDateContainer.setPrefSize(120, 100);
             node.setDate(calendarDate);
@@ -145,25 +176,35 @@ public class CalendarController implements Initializable {
         this.populateCalendar();
     }
 
-    public void navigateToManageCustomersView(ActionEvent actionEvent) {
+    public void navigateToManageCustomersView(ActionEvent actionEvent) throws IOException {
+        Stage primaryStage = (Stage) this.customersBtn.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("../customers/CustomersView.fxml"), this.resources);
+        primaryStage.setScene(new Scene(root,960, 680));
+    }
+
+    @FXML
+    private void onNewAppointmentBtnClick(ActionEvent event) {
+        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
         try {
-            Stage primaryStage = (Stage) this.customersBtn.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("../customers/CustomersView.fxml"), this.resources);
-            primaryStage.setScene(new Scene(root,960, 680));
-        } catch (IOException e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../appointment/AppointmentView.fxml"), resources);
+            launchCreateEditAppointmentStage(primaryStage, loader);
+        } catch (IOException exception) {
             return;
         }
     }
 
-    @FXML
-    private void onNewAppointmentBtnClick(ActionEvent event) throws IOException {
-        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
+    private void launchCreateEditAppointmentStage(Stage owner, FXMLLoader loader) throws IOException {
         final Stage createEditAppointmentStage = new Stage();
         createEditAppointmentStage.initModality(Modality.APPLICATION_MODAL);
-        createEditAppointmentStage.initOwner(primaryStage);
-        Parent root = FXMLLoader.load(getClass().getResource("../appointment/AppointmentView.fxml"));
+        createEditAppointmentStage.initOwner(owner);
+        Parent root = loader.load();
         createEditAppointmentStage.setTitle("Create/Edit Appointment");
-        createEditAppointmentStage.setScene(new Scene(root, 300, 200));
+        createEditAppointmentStage.setScene(new Scene(root, 560, 580));
+        createEditAppointmentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                populateCalendar();
+            }
+        });
         createEditAppointmentStage.show();
     }
 }

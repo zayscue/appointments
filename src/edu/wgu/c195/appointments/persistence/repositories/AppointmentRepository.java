@@ -46,8 +46,8 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
                    appointment.setLocation(t.asString("location"));
                    appointment.setContact(t.asString("contact"));
                    appointment.setUrl(t.asString("url"));
-                   appointment.setStart(t.asDate("start"));
-                   appointment.setEnd(t.asDate("end"));
+                   appointment.setStart(t.asTimeStamp("start"));
+                   appointment.setEnd(t.asTimeStamp("end"));
                    appointment.setCreateDate(t.asDate("createDate"));
                    appointment.setCreatedBy(t.asString("createdBy"));
                    appointment.setLastUpdate(t.asTimeStamp("lastUpdate"));
@@ -88,8 +88,8 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
             appointment.setLocation(resultSet.getString("location"));
             appointment.setContact(resultSet.getString("contact"));
             appointment.setUrl(resultSet.getString("url"));
-            appointment.setStart(resultSet.getDate("start"));
-            appointment.setEnd(resultSet.getDate("end"));
+            appointment.setStart(resultSet.getTimestamp("start"));
+            appointment.setEnd(resultSet.getTimestamp("end"));
             appointment.setCreateDate(resultSet.getDate("createDate"));
             appointment.setCreatedBy(resultSet.getString("createdBy"));
             appointment.setLastUpdate(resultSet.getTimestamp("lastUpdate"));
@@ -149,8 +149,8 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
             insertStatement.setString(5, entity.getLocation());
             insertStatement.setString(6, entity.getContact());
             insertStatement.setString(7, entity.getUrl());
-            insertStatement.setDate(8, entity.getStart());
-            insertStatement.setDate(9, entity.getEnd());
+            insertStatement.setTimestamp(8, entity.getStart());
+            insertStatement.setTimestamp(9, entity.getEnd());
             insertStatement.setDate(10, entity.getCreateDate());
             insertStatement.setString(11, entity.getCreatedBy());
             insertStatement.setTimestamp(12, entity.getLastUpdate());
@@ -193,8 +193,8 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
             updateStatement.setString(4, entity.getLocation());
             updateStatement.setString(5, entity.getContact());
             updateStatement.setString(6, entity.getUrl());
-            updateStatement.setDate(7, entity.getStart());
-            updateStatement.setDate(8, entity.getEnd());
+            updateStatement.setTimestamp(7, entity.getStart());
+            updateStatement.setTimestamp(8, entity.getEnd());
             updateStatement.setTimestamp(9, entity.getLastUpdate());
             updateStatement.setString(10, entity.getLastUpdateBy());
             updateStatement.setInt(11, entity.getAppointmentId());
