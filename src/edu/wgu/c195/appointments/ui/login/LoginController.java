@@ -52,7 +52,7 @@ public class LoginController implements Initializable {
                         loggingThread.start();
                         AppointmentsUI.CurrentUser = user;
                         Stage primaryStage = (Stage) this.signBtn.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("../calendar/CalendarView.fxml"), this.bundle);
+                        Parent root = FXMLLoader.load(getClass().getResource("../calendar/MainView.fxml"), this.bundle);
                         primaryStage.setScene(new Scene(root,960, 680));
                     } else {
                         throw new IncorrectUserNameOrPasswordException();

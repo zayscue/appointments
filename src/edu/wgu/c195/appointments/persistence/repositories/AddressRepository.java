@@ -138,7 +138,7 @@ public class AddressRepository extends RepositoryBase<Address> {
             }
             insertStatement.setInt(1, entity.getAddressId());
             insertStatement.setString(2, entity.getAddress());
-            insertStatement.setString(3, entity.getAddress2());
+            insertStatement.setString(3, entity.getAddress2() == null ? "" : entity.getAddress2());
             insertStatement.setInt(4, entity.getCityId());
             insertStatement.setString(5, entity.getPostalCode());
             insertStatement.setString(6, entity.getPhone());

@@ -2,13 +2,14 @@ package edu.wgu.c195.appointments.ui.calendar;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 import java.time.LocalDate;
 
 /**
  * Create an anchor pane that can store additional data.
  */
-public class CalendarDayNode extends AnchorPane {
+public class CalendarDayNode extends StackPane {
 
     // Date associated with this pane
     private LocalDate date;

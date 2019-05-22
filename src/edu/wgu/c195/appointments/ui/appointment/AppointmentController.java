@@ -3,6 +3,7 @@ package edu.wgu.c195.appointments.ui.appointment;
 import edu.wgu.c195.appointments.application.AppointmentViewModel;
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.domain.entities.Customer;
+import edu.wgu.c195.appointments.persistence.SQL;
 import edu.wgu.c195.appointments.persistence.repositories.AppointmentRepository;
 import edu.wgu.c195.appointments.persistence.repositories.CustomerRepository;
 import edu.wgu.c195.appointments.ui.AppointmentsUI;
@@ -23,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ import static javafx.stage.WindowEvent.WINDOW_CLOSE_REQUEST;
 public class AppointmentController implements Initializable {
 
     private final AppointmentRepository appointments;
+    private final CustomerRepository customerRepository;
     private final ObservableList<Customer> customers;
     @FXML
     private TextField titleTextField;
@@ -62,8 +65,9 @@ public class AppointmentController implements Initializable {
     public AppointmentController() {
         viewModel = new AppointmentViewModel();
         this.appointments = new AppointmentRepository();
-        final CustomerRepository customerRepository = new CustomerRepository();
-        this.customers = customerRepository.getAll()
+        this.customerRepository = new CustomerRepository();
+        this.customers = this.customerRepository.getAll()
+                .filter(customer -> customer.isActive())
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
     }
 
@@ -86,12 +90,27 @@ public class AppointmentController implements Initializable {
     }
 
     public void setAppointment(Appointment appointment) {
-        Customer customer = this.customers
-                .stream()
-                .filter(x -> x.getCustomerId() == appointment.getCustomerId())
-                .findFirst()
-                .get();
-        this.viewModel.setAppointment(appointment, customer);
+        this.viewModel.setAppointment(appointment);
+        if (appointment.getCustomerId() > 0) {
+            Optional<Customer> customer = this.customers
+                    .stream()
+                    .filter(x -> x.getCustomerId() == appointment.getCustomerId())
+                    .findFirst();
+            if (customer.isPresent()) {
+                this.viewModel.setCustomer(customer.get());
+            } else {
+                try {
+                    Customer inactiveCustomer = this.customerRepository.get(appointment.getCustomerId());
+                    if (inactiveCustomer != null) {
+                        this.viewModel.setCustomer(inactiveCustomer);
+                    } else {
+                        this.viewModel.setCustomer(null);
+                    }
+                } catch (SQLException e) {
+                    this.viewModel.setCustomer(null);
+                }
+            }
+        }
     }
 
     @FXML

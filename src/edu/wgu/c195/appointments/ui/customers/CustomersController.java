@@ -177,8 +177,8 @@ public class CustomersController implements Initializable {
     @FXML
     private void onBackBtnClick(ActionEvent event) throws IOException {
         Stage primaryStage = (Stage) this.backBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("../calendar/CalendarView.fxml"), this.resources);
-        primaryStage.setScene(new Scene(root, 960, 680));
+        Parent root = FXMLLoader.load(getClass().getResource("../calendar/MainView.fxml"), this.resources);
+        primaryStage.setScene(new Scene(root,primaryStage.getWidth(), primaryStage.getHeight()));
     }
 
     @FXML
@@ -189,13 +189,13 @@ public class CustomersController implements Initializable {
     @FXML
     private void onDeleteBtnClick(ActionEvent event) throws SQLException {
         Address address = this.viewModel.getAddress();
-        if (address != null) {
+        if (address != null && address.getAddressId() > 0) {
             this.addresses.delete(address.getAddressId());
             this.addresses.save();
         }
 
         Customer customer = this.viewModel.getCustomer();
-        if (customer != null) {
+        if (customer != null && customer.getCustomerId() > 0) {
             this.customers.delete(customer.getCustomerId());
             this.customers.save();
             this.customersTable.getItems().remove(customer);
@@ -209,38 +209,28 @@ public class CustomersController implements Initializable {
         String currentUser = AppointmentsUI.CurrentUser.getUserName();
 
         Country country = this.viewModel.getCountry();
-        if (country != null) {
+        if (country != null && country.getCountryId() <= 0) {
             country.setLastUpdate(currentTimestamp);
             country.setLastUpdateBy(currentUser);
-            if(country.getCountryId() > 0) {
-                this.countries.update(country);
-                this.countries.save();
-            } else {
-                country.setCreateDate(currentDate);
-                country.setCreatedBy(currentUser);
-                this.countries.add(country);
-                this.countries.save();
-                this.countriesObservableList.add(country);
-            }
+            country.setCreateDate(currentDate);
+            country.setCreatedBy(currentUser);
+            this.countries.add(country);
+            this.countries.save();
+            this.countriesObservableList.add(country);
         }
 
         City city = this.viewModel.getCity();
-        if (city != null) {
+        if (city != null && city.getCityId() <= 0) {
             city.setLastUpdate(currentTimestamp);
             city.setLastUpdateBy(currentUser);
             city.setCountryId(country.getCountryId());
-            if (city.getCityId() > 0) {
-                this.cities.update(city);
-                this.cities.save();
-            } else {
-                city.setCreateDate(currentDate);
-                city.setCreatedBy(currentUser);
-                this.cities.add(city);
-                this.cities.save();
-                this.citiesObservableList.add(city);
-                this.customerAddressCountryComboBox.getSelectionModel().select(country);
-                this.customerAddressCityComboBox.getSelectionModel().select(city);
-            }
+            city.setCreateDate(currentDate);
+            city.setCreatedBy(currentUser);
+            this.cities.add(city);
+            this.cities.save();
+            this.citiesObservableList.add(city);
+            this.customerAddressCountryComboBox.getSelectionModel().select(country);
+            this.customerAddressCityComboBox.getSelectionModel().select(city);
         }
 
         Address address = this.viewModel.getAddress();
@@ -269,6 +259,7 @@ public class CustomersController implements Initializable {
             } else {
                 customer.setCreateDate(currentDate);
                 customer.setCreatedBy(currentUser);
+                customer.setAddressId(address.getAddressId());
                 this.customers.add(customer);
                 this.customers.save();
                 this.customersObservableList.add(customer);

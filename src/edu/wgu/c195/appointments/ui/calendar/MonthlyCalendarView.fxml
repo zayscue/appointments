@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml">
+    <VBox>
+        <padding>
+            <Insets bottom="5" />
+        </padding>
+        <children>
+            <GridPane>
+                <Button fx:id="previousMonthBtn" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Text fx:id="monthText" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" />
+                <Button fx:id="nextMonthBtn" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            </GridPane>
+            <GridPane fx:id="monthlyCalendarHeader" />
+            <GridPane fx:id="monthlyCalendar" gridLinesVisible="true" />
+        </children>
+    </VBox>
+</GridPane>

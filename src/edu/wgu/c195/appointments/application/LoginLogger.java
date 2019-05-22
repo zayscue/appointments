@@ -30,9 +30,7 @@ public class LoginLogger implements Runnable {
             });
             LOGGER = Logger.getLogger("LoginLogger");
             LOGGER.addHandler(fileHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { }
     }
 
     private final User user;

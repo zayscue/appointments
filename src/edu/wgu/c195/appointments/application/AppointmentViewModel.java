@@ -52,7 +52,11 @@ public class AppointmentViewModel {
             this.appointment.setTitle(newValue);
         });
         this.customer.addListener((observable, oldValue, newValue) -> {
-            this.appointment.setCustomerId(newValue.getCustomerId());
+            if (newValue != null) {
+                this.appointment.setCustomerId(newValue.getCustomerId());
+            } else {
+                this.appointment.setCustomerId(0);
+            }
         });
         this.location.addListener((observable, oldValue, newValue) -> {
             this.appointment.setLocation(newValue);
@@ -84,10 +88,9 @@ public class AppointmentViewModel {
         return this.appointment;
     }
 
-    public void setAppointment(Appointment appointment, Customer customer) {
+    public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
         this.title.set(appointment.getTitle());
-        this.customer.set(customer);
         this.location.set(appointment.getLocation());
         this.contact.set(appointment.getContact());
         this.url.set(appointment.getUrl());
@@ -97,6 +100,11 @@ public class AppointmentViewModel {
         this.endDate.set(appointment.getEnd().toLocalDateTime().toLocalDate());
         this.endTime.set(appointment.getEnd().toLocalDateTime().toLocalTime());
     }
+
+    public void setCustomer(Customer customer) {
+        this.customer.set(customer);
+    }
+
 
     public StringProperty titleProperty() {
         return this.title;
