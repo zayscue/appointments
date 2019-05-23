@@ -2,7 +2,6 @@ package edu.wgu.c195.appointments.application;
 
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.domain.entities.Customer;
-import edu.wgu.c195.appointments.domain.entities.Reminder;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,19 +11,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AppointmentViewModel {
 
     private Appointment appointment;
-    private List<Reminder> reminders;
 
     private StringProperty title = new SimpleStringProperty();
     private ObjectProperty<Customer> customer = new SimpleObjectProperty<>();
     private StringProperty location = new SimpleStringProperty();
     private StringProperty contact = new SimpleStringProperty();
-    private StringProperty url = new SimpleStringProperty();
+    private ObjectProperty<String> url = new SimpleObjectProperty<>();
     private StringProperty description = new SimpleStringProperty();
     private ObjectProperty<LocalDate> startDate = new SimpleObjectProperty<>(LocalDate.now());
     private ObjectProperty<LocalTime> startTime = new SimpleObjectProperty<>(LocalTime.now().with(time -> {
@@ -47,7 +43,6 @@ public class AppointmentViewModel {
         this.appointment = new Appointment();
         this.appointment.setStart(java.sql.Timestamp.valueOf(LocalDateTime.of(this.startDate.get(), this.startTime.get())));
         this.appointment.setEnd(java.sql.Timestamp.valueOf(LocalDateTime.of(this.endDate.get(), this.endTime.get())));
-        this.reminders = new ArrayList<>();
         this.title.addListener((observable, oldValue, newValue) -> {
             this.appointment.setTitle(newValue);
         });
@@ -122,7 +117,7 @@ public class AppointmentViewModel {
         return this.contact;
     }
 
-    public StringProperty urlProperty() {
+    public ObjectProperty<String> urlProperty() {
         return this.url;
     }
 

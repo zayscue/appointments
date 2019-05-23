@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
@@ -8,30 +7,59 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ButtonBar?>
-
 <?import javafx.scene.layout.GridPane?>
-<GridPane  xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.calendar.MainController">
-    <VBox fx:id="calendarVBox" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.columnIndex="0">
-        <padding>
-            <Insets top="10" right="10" bottom="10" left="20"/>
-        </padding>
-        <VBox spacing="10">
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+
+<?import javafx.scene.control.MenuItem?>
+<?import com.sun.javafx.scene.control.skin.ContextMenuContent.MenuBox?>
+<VBox xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wgu.c195.appointments.ui.calendar.MainController">
+    <MenuBar fx:id="menuBar">
+        <menus>
+            <Menu text="File">
+                <items>
+                </items>
+            </Menu>
+            <Menu text="Edit">
+                <items>
+                </items>
+            </Menu>
+            <Menu text="View">
+                <items>
+                    <Menu text="Reports">
+                        <items>
+                            <MenuItem text="Number Of Appointment Types By Month" onAction="#runAppointmentTypeByMonthReport"/>
+                            <MenuItem text="Schedule for each Consultant" onAction="#runScheduleForEachConsultantReport" />
+                            <MenuItem text="Number of Appointments for each Customer" onAction="#runNumberOfAppointmentsPerCustomerReport" />
+                        </items>
+                    </Menu>
+                </items>
+            </Menu>
+        </menus>
+    </MenuBar>
+    <GridPane>
+        <VBox fx:id="calendarVBox" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.columnIndex="0">
             <padding>
-                <Insets bottom="5"/>
+                <Insets top="10" right="10" bottom="10" left="20"/>
             </padding>
-            <ButtonBar>
-                <buttons>
-                    <Button fx:id="customersBtn" onAction="#navigateToManageCustomersView" text="New Customer" ButtonBar.buttonData="LEFT"  />
-                    <HBox>
-                        <fx:define>
-                            <ToggleGroup fx:id="calendarViewOptions"/>
-                        </fx:define>
-                        <ToggleButton toggleGroup="$calendarViewOptions" text="Week" minWidth="100" />
-                        <ToggleButton toggleGroup="$calendarViewOptions" text="Month" minWidth="100" selected="true" />
-                    </HBox>
-                    <Button fx:id="newAppointmentBtn" text="New Appointment" onAction="#onNewAppointmentBtnClick" ButtonBar.buttonData="RIGHT" />
-                </buttons>
-            </ButtonBar>
+            <VBox spacing="10">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+                <ButtonBar>
+                    <buttons>
+                        <Button fx:id="customersBtn" onAction="#navigateToManageCustomersView" text="New Customer" ButtonBar.buttonData="LEFT"  />
+                        <HBox>
+                            <fx:define>
+                                <ToggleGroup fx:id="calendarViewOptions"/>
+                            </fx:define>
+                            <ToggleButton toggleGroup="$calendarViewOptions" text="Week" minWidth="100" />
+                            <ToggleButton toggleGroup="$calendarViewOptions" text="Month" minWidth="100" selected="true" />
+                        </HBox>
+                        <Button fx:id="newAppointmentBtn" text="New Appointment" onAction="#onNewAppointmentBtnClick" ButtonBar.buttonData="RIGHT" />
+                    </buttons>
+                </ButtonBar>
+            </VBox>
         </VBox>
-    </VBox>
-</GridPane>
+    </GridPane>
+</VBox>

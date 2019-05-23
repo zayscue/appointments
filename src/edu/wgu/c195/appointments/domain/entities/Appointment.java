@@ -172,10 +172,10 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return this.getTitle()
-                + " "
-                + this.getStart().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mma"))
+        return this.getStart().toLocalDateTime().format(DateTimeFormatter.ofPattern("hh:mma"))
                 + "-"
-                + this.getEnd().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mma"));
+                + this.getEnd().toLocalDateTime().format(DateTimeFormatter.ofPattern("hh:mma"))
+                + ": "
+                + this.getTitle();
     }
 }

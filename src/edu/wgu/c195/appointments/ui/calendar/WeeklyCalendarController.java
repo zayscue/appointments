@@ -26,6 +26,7 @@ import java.sql.Date;
 import java.time.*;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -120,6 +121,18 @@ public class WeeklyCalendarController extends CalendarView implements Initializa
                 .filter(a -> a.getStart().after(Date.valueOf(this.firstDay))
                     && a.getStart().before(Date.valueOf(this.firstDay.plusDays(7)))
                 )
+                .sorted(new Comparator<Appointment>() {
+                    @Override
+                    public int compare(Appointment o1, Appointment o2) {
+                        if(o1.getStart().after(o2.getStart())) {
+                            return 1;
+                        } else if (o1.getStart().before(o2.getStart())) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                })
                 .collect(Collectors.toList());
         LocalDate calendarDate = LocalDate.of(this.firstDay.getYear(), this.firstDay.getMonthValue(), this.firstDay.getDayOfMonth());
         for (CalendarDayNode dayNode : this.dayNodes) {

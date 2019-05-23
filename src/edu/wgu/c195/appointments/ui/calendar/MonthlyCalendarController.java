@@ -27,6 +27,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -110,6 +111,18 @@ public class MonthlyCalendarController extends CalendarView implements Initializ
             .filter(a -> a.getStart().after(Date.valueOf(this.month.format(DateTimeFormatter.ofPattern("yyyy-MM-01"))))
                     && a.getStart().before(Date.valueOf(LocalDate.of(this.month.getYear(), this.month.getMonthValue() + 1, 1)))
             )
+            .sorted(new Comparator<Appointment>() {
+                @Override
+                public int compare(Appointment o1, Appointment o2) {
+                    if(o1.getStart().after(o2.getStart())) {
+                        return 1;
+                    } else if (o1.getStart().before(o2.getStart())) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            })
             .collect(Collectors.toList());
 
         LocalDate calendarDate = LocalDate.of(this.month.getYear(), this.month.getMonthValue(), 1);

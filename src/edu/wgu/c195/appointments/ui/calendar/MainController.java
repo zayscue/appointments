@@ -1,26 +1,39 @@
 package edu.wgu.c195.appointments.ui.calendar;
 
+import edu.wgu.c195.appointments.application.AppointmentTypesByMonth;
+import edu.wgu.c195.appointments.application.AppointmentsPerCustomer;
+import edu.wgu.c195.appointments.application.ConsultantSchedule;
+import edu.wgu.c195.appointments.application.ReportsRunner;
+import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.persistence.repositories.AppointmentRepository;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -40,9 +53,11 @@ public class MainController implements Initializable {
     private final CalendarView weeklyController;
 
     private final AppointmentRepository appointmentRepository;
+    private final ReportsRunner reportsRunner;
 
     public MainController() {
         this.appointmentRepository = new AppointmentRepository();
+        this.reportsRunner = new ReportsRunner();
         this.monthlyController = new MonthlyCalendarController(this.appointmentRepository);
         this.weeklyController = new WeeklyCalendarController(this.appointmentRepository);
     }
@@ -145,5 +160,111 @@ public class MainController implements Initializable {
             }
         });
         createEditAppointmentStage.show();
+    }
+
+    @FXML
+    private void runAppointmentTypeByMonthReport(ActionEvent actionEvent) throws SQLException {
+        List<AppointmentTypesByMonth> results = this.reportsRunner.runAppointmentTypeByMonthReport();
+        List<String> appointmentTypes = results.stream()
+                .map(a -> a.getAppointmentType())
+                .distinct()
+                .collect(Collectors.toList());
+        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
+        final Stage reportStage  = new Stage();
+        reportStage.initModality(Modality.APPLICATION_MODAL);
+        reportStage.initOwner(primaryStage);
+        reportStage.setTitle("Report");
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String, Number> bc = new BarChart<String, Number>(xAxis, yAxis);
+        bc.setTitle("Number Of Appointment Types By Month");
+        xAxis.setLabel("Month");
+        yAxis.setLabel("Count");
+
+        for (String appointmentType : appointmentTypes) {
+            XYChart.Series series = new XYChart.Series();
+            series.setName(appointmentType);
+            List<AppointmentTypesByMonth> appointmentTypesThisMonth = results.stream()
+                    .filter(a -> a.getAppointmentType().equals(appointmentType))
+                    .collect(Collectors.toList());
+            for (AppointmentTypesByMonth appointmentTypesByMonth : appointmentTypesThisMonth) {
+                series.getData().add(new XYChart.Data(appointmentTypesByMonth.getMonth(), appointmentTypesByMonth.getCount()));
+            }
+            bc.getData().add(series);
+        }
+
+        Scene scene = new Scene(bc, 800, 600);
+        reportStage.setScene(scene);
+        reportStage.show();
+    }
+
+    @FXML
+    private void runScheduleForEachConsultantReport(ActionEvent actionEvent) throws SQLException {
+        List<ConsultantSchedule> consultantSchedules = this.reportsRunner.runConsultantScheduleReport();
+        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
+        final Stage reportStage  = new Stage();
+        reportStage.initModality(Modality.APPLICATION_MODAL);
+        reportStage.initOwner(primaryStage);
+        reportStage.setTitle("Report");
+        GridPane consultantsNode = new GridPane();
+        consultantsNode.setPadding(new Insets(10));
+        Text title = new Text("Consultants Schedules");
+        title.setTextAlignment(TextAlignment.CENTER);
+        consultantsNode.add(title, 0, 0);
+        int count = 1;
+        for (ConsultantSchedule schedule : consultantSchedules) {
+            Text text = new Text(schedule.getConsultant());
+            ListView listView = new ListView();
+            listView.setPrefWidth(580);
+            listView.setItems(schedule.getUpcomingAppointments()
+                    .stream()
+                    .sorted(new Comparator<Appointment>() {
+                        @Override
+                        public int compare(Appointment o1, Appointment o2) {
+                            if(o1.getStart().after(o2.getStart())) {
+                                return 1;
+                            } else if (o1.getStart().before(o2.getStart())) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    })
+                    .map(a -> a.getStart().toLocalDateTime().format(DateTimeFormatter.ofPattern("MM-yyyy")) + " " + a.toString())
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList))
+            );
+            VBox consultantNode = new VBox(text, listView);
+            GridPane.setHgrow(consultantNode, Priority.ALWAYS);
+            GridPane.setVgrow(consultantNode, Priority.ALWAYS);
+            consultantsNode.add(consultantNode, 0, count);
+            count++;
+        }
+        ScrollPane scrollPane = new ScrollPane(consultantsNode);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        Scene scene = new Scene(scrollPane, 800, 600);
+        reportStage.setScene(scene);
+        reportStage.show();
+    }
+
+    @FXML
+    private void runNumberOfAppointmentsPerCustomerReport(ActionEvent actionEvent) throws SQLException {
+        List<AppointmentsPerCustomer> appointmentsPerCustomers = this.reportsRunner.runNumberOfAppointmentsPerCustomerReport();
+        Stage primaryStage = (Stage) this.newAppointmentBtn.getScene().getWindow();
+        final Stage reportStage  = new Stage();
+        reportStage.initModality(Modality.APPLICATION_MODAL);
+        reportStage.initOwner(primaryStage);
+        reportStage.setTitle("Report");
+
+        ObservableList<PieChart.Data> pieChartData = appointmentsPerCustomers
+                .stream()
+                .map(a -> new PieChart.Data(a.getCustomerName(), a.getCount()))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        final PieChart chart = new PieChart(pieChartData);
+        chart.setTitle("Number of Appointment Per Customer");
+
+        Scene scene = new Scene(chart, 800, 600);
+        reportStage.setScene(scene);
+        reportStage.show();
     }
 }

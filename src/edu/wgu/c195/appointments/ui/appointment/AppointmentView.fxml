@@ -21,8 +21,8 @@
         <TextField fx:id="locationTextField" />
         <Label text="Contact" />
         <TextField fx:id="contactTextField" />
-        <Label text="Url" />
-        <TextField fx:id="urlTextField" />
+        <Label text="Type" />
+        <ComboBox fx:id="typeComboBox" />
         <Label text="Description" />
         <TextArea fx:id="descriptionTextArea" />
         <GridPane hgap="10">

@@ -35,6 +35,11 @@ public class AppointmentController implements Initializable {
     private final AppointmentRepository appointments;
     private final CustomerRepository customerRepository;
     private final ObservableList<Customer> customers;
+    private final ObservableList<String> appointmentTypes = FXCollections.observableArrayList("Dinner Meeting",
+                                                                                                            "Lunch Meeting",
+                                                                                                            "Sports Game",
+                                                                                                            "Theater Show");
+
     @FXML
     private TextField titleTextField;
     @FXML
@@ -44,7 +49,7 @@ public class AppointmentController implements Initializable {
     @FXML
     private TextField contactTextField;
     @FXML
-    private TextField urlTextField;
+    private ComboBox typeComboBox;
     @FXML
     private TextArea descriptionTextArea;
     @FXML
@@ -66,6 +71,7 @@ public class AppointmentController implements Initializable {
         viewModel = new AppointmentViewModel();
         this.appointments = new AppointmentRepository();
         this.customerRepository = new CustomerRepository();
+        // Only show acitve customers
         this.customers = this.customerRepository.getAll()
                 .filter(customer -> customer.isActive())
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -76,12 +82,13 @@ public class AppointmentController implements Initializable {
         this.resources = resources;
 
         this.customersComboBox.setItems(this.customers);
+        this.typeComboBox.setItems(this.appointmentTypes);
 
         Bindings.bindBidirectional(this.titleTextField.textProperty(), this.viewModel.titleProperty());
         Bindings.bindBidirectional(this.customersComboBox.valueProperty(), this.viewModel.customerProperty());
         Bindings.bindBidirectional(this.locationTextField.textProperty(), this.viewModel.locationProperty());
         Bindings.bindBidirectional(this.contactTextField.textProperty(), this.viewModel.contactProperty());
-        Bindings.bindBidirectional(this.urlTextField.textProperty(), this.viewModel.urlProperty());
+        Bindings.bindBidirectional(this.typeComboBox.valueProperty(), this.viewModel.urlProperty());
         Bindings.bindBidirectional(this.descriptionTextArea.textProperty(), this.viewModel.descriptionProperty());
         Bindings.bindBidirectional(this.startDatePicker.valueProperty(), this.viewModel.startDateProperty());
         Bindings.bindBidirectional(this.startTimeTextField.textProperty(), this.viewModel.startTimeProperty(), new LocalTimeStringConverter());
@@ -92,6 +99,7 @@ public class AppointmentController implements Initializable {
     public void setAppointment(Appointment appointment) {
         this.viewModel.setAppointment(appointment);
         if (appointment.getCustomerId() > 0) {
+            // Query customer by id from the observable list of customers
             Optional<Customer> customer = this.customers
                     .stream()
                     .filter(x -> x.getCustomerId() == appointment.getCustomerId())

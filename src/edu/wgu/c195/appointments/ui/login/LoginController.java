@@ -1,5 +1,6 @@
 package edu.wgu.c195.appointments.ui.login;
 
+import edu.wgu.c195.appointments.application.AppointmentAlertTask;
 import edu.wgu.c195.appointments.application.LoginLogger;
 import edu.wgu.c195.appointments.application.UserManager;
 import edu.wgu.c195.appointments.domain.entities.User;
@@ -48,9 +49,11 @@ public class LoginController implements Initializable {
                 User user = this.userManager.findByUserName(userName);
                 if(user != null) {
                     if(this.userManager.checkPassword(user, password)) {
+                        AppointmentsUI.CurrentUser = user;
                         Thread loggingThread = new Thread(LoginLogger.createLogger(user));
                         loggingThread.start();
-                        AppointmentsUI.CurrentUser = user;
+                        AppointmentAlertTask task = new AppointmentAlertTask();
+                        task.run();
                         Stage primaryStage = (Stage) this.signBtn.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("../calendar/MainView.fxml"), this.bundle);
                         primaryStage.setScene(new Scene(root,960, 680));
