@@ -1,8 +1,11 @@
 package edu.wgu.c195.appointments.ui.appointment;
 
 import edu.wgu.c195.appointments.application.AppointmentViewModel;
+import edu.wgu.c195.appointments.domain.ValidationResult;
 import edu.wgu.c195.appointments.domain.entities.Appointment;
 import edu.wgu.c195.appointments.domain.entities.Customer;
+import edu.wgu.c195.appointments.domain.exceptions.ConflictingAppointmentException;
+import edu.wgu.c195.appointments.domain.exceptions.InvalidAppointmentDataException;
 import edu.wgu.c195.appointments.persistence.SQL;
 import edu.wgu.c195.appointments.persistence.repositories.AppointmentRepository;
 import edu.wgu.c195.appointments.persistence.repositories.CustomerRepository;
@@ -128,20 +131,56 @@ public class AppointmentController implements Initializable {
         String currentUser = AppointmentsUI.CurrentUser.getUserName();
 
         Appointment appointment = this.viewModel.getAppointment();
-        appointment.setLastUpdate(currentTimestamp);
-        appointment.setLastUpdateBy(currentUser);
-        if (appointment.getAppointmentId() > 0) {
-            this.appointments.update(appointment);
-        } else {
-            appointment.setCreateDate(currentDate);
-            appointment.setCreatedBy(currentUser);
-            this.appointments.add(appointment);
-        }
-        this.appointments.save();
+        try {
+            if (appointment == null) {
+                throw new InvalidAppointmentDataException();
+            }
+            ValidationResult validationResult = appointment.validate();
+            if (!validationResult.isValid()) {
+                throw new InvalidAppointmentDataException(validationResult);
+            }
+            boolean conflictingAppointments = this.appointments.getAll()
+                    .anyMatch(a -> {
+                        boolean startTimeConflict = appointment.getStart().equals(a.getStart())
+                                || appointment.getStart().after(a.getStart())
+                                && appointment.getStart().before(a.getEnd())
+                                || appointment.getStart().equals(a.getEnd());
+                        boolean endTimeConflict = appointment.getEnd().equals(a.getEnd())
+                                || appointment.getEnd().before(a.getEnd())
+                                && appointment.getEnd().after(a.getStart())
+                                || appointment.getEnd().equals(a.getStart());
+                        return startTimeConflict || endTimeConflict;
+                    });
+            if (conflictingAppointments) {
+                throw new ConflictingAppointmentException();
+            }
+            appointment.setLastUpdate(currentTimestamp);
+            appointment.setLastUpdateBy(currentUser);
+            if (appointment.getAppointmentId() > 0) {
+                this.appointments.update(appointment);
+            } else {
+                appointment.setCreateDate(currentDate);
+                appointment.setCreatedBy(currentUser);
+                this.appointments.add(appointment);
+            }
+            this.appointments.save();
 
-        Stage createEditAppointmentStage = (Stage) this.saveBtn.getScene().getWindow();
-        createEditAppointmentStage.getOnCloseRequest().handle(new WindowEvent(createEditAppointmentStage, WINDOW_CLOSE_REQUEST));
-        createEditAppointmentStage.close();
+            Stage createEditAppointmentStage = (Stage) this.saveBtn.getScene().getWindow();
+            createEditAppointmentStage.getOnCloseRequest().handle(new WindowEvent(createEditAppointmentStage, WINDOW_CLOSE_REQUEST));
+            createEditAppointmentStage.close();
+        } catch (InvalidAppointmentDataException invalidAppointment) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Ooops, there was an error!");
+            alert.setContentText(invalidAppointment.getMessage());
+            alert.showAndWait();
+        } catch (ConflictingAppointmentException conflictingAppointment) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Ooops, there was an error!");
+            alert.setContentText(conflictingAppointment.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML

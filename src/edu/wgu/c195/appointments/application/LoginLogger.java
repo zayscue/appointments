@@ -14,7 +14,7 @@ public class LoginLogger implements Runnable {
 
     static {
         try {
-            FileHandler fileHandler = new FileHandler("appointments_login.log", true);
+            FileHandler fileHandler = new FileHandler("appointments_login.txt", true);
             fileHandler.setFormatter(new Formatter() {
                 @Override
                 public String format(LogRecord record) {

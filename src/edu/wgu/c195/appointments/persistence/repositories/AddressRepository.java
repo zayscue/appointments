@@ -179,7 +179,7 @@ public class AddressRepository extends RepositoryBase<Address> {
             super.startTransaction();
             updateStatement = super.connection.prepareStatement(updateSqlStr);
             updateStatement.setString(1, entity.getAddress());
-            updateStatement.setString(2, entity.getAddress2());
+            updateStatement.setString(2, entity.getAddress2() == null ? "" : entity.getAddress2());
             updateStatement.setInt(3, entity.getCityId());
             updateStatement.setString(4, entity.getPostalCode());
             updateStatement.setString(5, entity.getPhone());

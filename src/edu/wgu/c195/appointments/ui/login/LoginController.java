@@ -58,19 +58,18 @@ public class LoginController implements Initializable {
                         Parent root = FXMLLoader.load(getClass().getResource("../calendar/MainView.fxml"), this.bundle);
                         primaryStage.setScene(new Scene(root,960, 680));
                     } else {
-                        throw new IncorrectUserNameOrPasswordException();
+                        throw new IncorrectUserNameOrPasswordException(this.bundle.getString("LoginErrorMessage"));
                     }
                 } else {
-                    throw new IncorrectUserNameOrPasswordException();
+                    throw new IncorrectUserNameOrPasswordException(this.bundle.getString("LoginErrorMessage"));
                 }
             }
         }
         catch(IncorrectUserNameOrPasswordException loginException) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
+            alert.setTitle("Error");
             alert.setHeaderText("Ooops, there was an error!");
             alert.setContentText(loginException.getMessage());
-
             alert.showAndWait();
         }
         catch(IOException e) {

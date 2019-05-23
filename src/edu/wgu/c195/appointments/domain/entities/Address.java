@@ -1,7 +1,11 @@
 package edu.wgu.c195.appointments.domain.entities;
 
+import edu.wgu.c195.appointments.domain.ValidationResult;
+
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Address {
     private int addressId;
@@ -130,6 +134,27 @@ public class Address {
 
     public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
+    }
+
+    public ValidationResult validate() {
+        List<String> errors = new ArrayList<>();
+        if (this.address == null || this.address.trim().equals("")) {
+            errors.add("The street address can't be empty.");
+        }
+        if (this.cityId <= 0) {
+            errors.add("The cityId can't be less than or equal to zero.");
+        }
+        if (this.postalCode == null || this.postalCode.trim().equals("")) {
+            errors.add("The postal code can't be empty.");
+        }
+        if (this.phone == null || this.phone.trim().equals("")) {
+            errors.add("The phone number can't be empty.");
+        }
+        if (errors.size() > 0) {
+            return new ValidationResult(errors);
+        } else {
+            return new ValidationResult();
+        }
     }
 
 }

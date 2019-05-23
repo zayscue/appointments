@@ -145,10 +145,10 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
             insertStatement.setInt(1, entity.getAppointmentId());
             insertStatement.setInt(2, entity.getCustomerId());
             insertStatement.setString(3, entity.getTitle());
-            insertStatement.setString(4, entity.getDescription());
-            insertStatement.setString(5, entity.getLocation());
+            insertStatement.setString(4, entity.getDescription() == null ? "" : entity.getDescription());
+            insertStatement.setString(5, entity.getLocation() == null ? "" : entity.getLocation());
             insertStatement.setString(6, entity.getContact());
-            insertStatement.setString(7, entity.getUrl());
+            insertStatement.setString(7, entity.getUrl() == null ? "None" : entity.getUrl());
             insertStatement.setTimestamp(8, entity.getStart());
             insertStatement.setTimestamp(9, entity.getEnd());
             insertStatement.setDate(10, entity.getCreateDate());
@@ -189,10 +189,10 @@ public class AppointmentRepository extends RepositoryBase<Appointment> {
             updateStatement = super.connection.prepareStatement(updateSqlStr);
             updateStatement.setInt(1, entity.getCustomerId());
             updateStatement.setString(2, entity.getTitle());
-            updateStatement.setString(3, entity.getDescription());
-            updateStatement.setString(4, entity.getLocation());
+            updateStatement.setString(3, entity.getDescription() == null ? "" : entity.getDescription());
+            updateStatement.setString(4, entity.getLocation() == null ? "" : entity.getLocation());
             updateStatement.setString(5, entity.getContact());
-            updateStatement.setString(6, entity.getUrl());
+            updateStatement.setString(6, entity.getUrl() == null ? "None" : entity.getUrl());
             updateStatement.setTimestamp(7, entity.getStart());
             updateStatement.setTimestamp(8, entity.getEnd());
             updateStatement.setTimestamp(9, entity.getLastUpdate());

@@ -6,4 +6,8 @@ public class IncorrectUserNameOrPasswordException extends Exception {
     public IncorrectUserNameOrPasswordException() {
         super(DEFAULT_ERROR_MESSAGE);
     }
+
+    public IncorrectUserNameOrPasswordException(String message) {
+        super(message);
+    }
 }

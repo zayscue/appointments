@@ -1,10 +1,13 @@
 package edu.wgu.c195.appointments.ui.customers;
 
 import edu.wgu.c195.appointments.application.CustomersViewModel;
+import edu.wgu.c195.appointments.domain.ValidationResult;
 import edu.wgu.c195.appointments.domain.entities.Address;
 import edu.wgu.c195.appointments.domain.entities.City;
 import edu.wgu.c195.appointments.domain.entities.Country;
 import edu.wgu.c195.appointments.domain.entities.Customer;
+import edu.wgu.c195.appointments.domain.exceptions.InvalidAddressDataException;
+import edu.wgu.c195.appointments.domain.exceptions.InvalidCustomerDataException;
 import edu.wgu.c195.appointments.persistence.repositories.AddressRepository;
 import edu.wgu.c195.appointments.persistence.repositories.CityRepository;
 import edu.wgu.c195.appointments.persistence.repositories.CountryRepository;
@@ -209,7 +212,7 @@ public class CustomersController implements Initializable {
         String currentUser = AppointmentsUI.CurrentUser.getUserName();
 
         Country country = this.viewModel.getCountry();
-        if (country != null && country.getCountryId() <= 0) {
+        if (country != null && country.getCountryId() <= 0 && country.getCountry() != null && !country.getCountry().trim().equals("")) {
             country.setLastUpdate(currentTimestamp);
             country.setLastUpdateBy(currentUser);
             country.setCreateDate(currentDate);
@@ -220,7 +223,7 @@ public class CustomersController implements Initializable {
         }
 
         City city = this.viewModel.getCity();
-        if (city != null && city.getCityId() <= 0) {
+        if (city != null && city.getCityId() <= 0 && country.getCountryId() > 0 && city.getCity() != null && !city.getCity().trim().equals("")) {
             city.setLastUpdate(currentTimestamp);
             city.setLastUpdateBy(currentUser);
             city.setCountryId(country.getCountryId());
@@ -233,38 +236,64 @@ public class CustomersController implements Initializable {
             this.customerAddressCityComboBox.getSelectionModel().select(city);
         }
 
-        Address address = this.viewModel.getAddress();
-        if (address != null) {
-            address.setLastUpdate(currentTimestamp);
-            address.setLastUpdateBy(currentUser);
-            address.setCityId(city.getCityId());
-            if (address.getAddressId() > 0) {
-                this.addresses.update(address);
-                this.addresses.save();
+        try {
+            Address address = this.viewModel.getAddress();
+            if (address != null) {
+                ValidationResult validationResult = address.validate();
+                if (!validationResult.isValid()) {
+                    throw new InvalidAddressDataException(validationResult);
+                }
+                address.setLastUpdate(currentTimestamp);
+                address.setLastUpdateBy(currentUser);
+                address.setCityId(city.getCityId());
+                if (address.getAddressId() > 0) {
+                    this.addresses.update(address);
+                    this.addresses.save();
+                } else {
+                    address.setCreateDate(currentDate);
+                    address.setCreatedBy(currentUser);
+                    this.addresses.add(address);
+                    this.addresses.save();
+                }
             } else {
-                address.setCreateDate(currentDate);
-                address.setCreatedBy(currentUser);
-                this.addresses.add(address);
-                this.addresses.save();
+                throw new InvalidAddressDataException();
             }
-        }
 
-        Customer customer = this.viewModel.getCustomer();
-        if (customer != null) {
-            customer.setLastUpdate(currentTimestamp);
-            customer.setLastUpdateBy(currentUser);
-            if (customer.getCustomerId() > 0) {
-                this.customers.update(customer);
-                this.customers.save();
+            Customer customer = this.viewModel.getCustomer();
+            if (customer != null) {
+                ValidationResult validationResult = customer.validate();
+                if (!validationResult.isValid()) {
+                    throw new InvalidCustomerDataException(validationResult);
+                }
+                customer.setLastUpdate(currentTimestamp);
+                customer.setLastUpdateBy(currentUser);
+                if (customer.getCustomerId() > 0) {
+                    this.customers.update(customer);
+                    this.customers.save();
+                } else {
+                    customer.setCreateDate(currentDate);
+                    customer.setCreatedBy(currentUser);
+                    customer.setAddressId(address.getAddressId());
+                    this.customers.add(customer);
+                    this.customers.save();
+                    this.customersObservableList.add(customer);
+                }
+                this.customersTable.refresh();
             } else {
-                customer.setCreateDate(currentDate);
-                customer.setCreatedBy(currentUser);
-                customer.setAddressId(address.getAddressId());
-                this.customers.add(customer);
-                this.customers.save();
-                this.customersObservableList.add(customer);
+                throw new InvalidCustomerDataException();
             }
-            this.customersTable.refresh();
+        } catch (InvalidAddressDataException invalidAddress) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Ooops, there was an error!");
+            alert.setContentText(invalidAddress.getMessage());
+            alert.showAndWait();
+        } catch (InvalidCustomerDataException invalidCustomer) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Ooops, there was an error!");
+            alert.setContentText(invalidCustomer.getMessage());
+            alert.showAndWait();
         }
     }
 

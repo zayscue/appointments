@@ -1,7 +1,11 @@
 package edu.wgu.c195.appointments.domain.entities;
 
+import edu.wgu.c195.appointments.domain.ValidationResult;
+
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Customer {
     private int customerId;
@@ -111,5 +115,20 @@ public class Customer {
     @Override
     public String toString() {
         return this.customerName;
+    }
+
+    public ValidationResult validate() {
+        List<String> errors = new ArrayList<>();
+        if (this.customerName == null || this.customerName.trim().equals("")) {
+            errors.add("The customer name can't be empty.");
+        }
+        if (this.addressId <= 0) {
+            errors.add("The addressId can't be less than or equal to zero.");
+        }
+        if (errors.size() > 0) {
+            return new ValidationResult(errors);
+        } else {
+            return new ValidationResult();
+        }
     }
 }
