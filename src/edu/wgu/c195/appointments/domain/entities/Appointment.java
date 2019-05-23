@@ -200,17 +200,23 @@ public class Appointment {
         if (this.url == null || this.url.trim().equals("")) {
             errors.add("You must select an appointment type.");
         }
-        if (this.start.toLocalDateTime().isAfter(LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 0)))) {
+        if (this.start.toLocalDateTime().toLocalTime().isAfter(LocalTime.of(19, 0))) {
             errors.add("Your meetings start time is after 7:00pm which is past business hours.");
         }
-        if (this.end.toLocalDateTime().isAfter(LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 0)))) {
+        if (this.end.toLocalDateTime().toLocalTime().isAfter(LocalTime.of(19, 0))) {
             errors.add("Your meetings end time is after 7:00pm which is past business hours.");
         }
-        if (this.start.toLocalDateTime().isBefore(LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)))) {
+        if (this.start.toLocalDateTime().toLocalTime().isBefore(LocalTime.of(7, 0))) {
             errors.add("Your meetings start time is before 7:00am which is before business hours.");
         }
-        if (this.end.toLocalDateTime().isBefore(LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)))) {
+        if (this.end.toLocalDateTime().toLocalTime().isBefore(LocalTime.of(7, 0))) {
             errors.add("Your meetings end time is before 7:00am which is before business hours.");
+        }
+        if (this.end.toLocalDateTime().toLocalDate().getDayOfWeek().getValue() > 5) {
+            errors.add("Meetings can't be scheduled on weekends.");
+        }
+        if (this.start.toLocalDateTime().toLocalDate().getDayOfWeek().getValue() > 5) {
+            errors.add("Meetings can't be scheduled on weekends.");
         }
         if (errors.size() > 0) {
             return new ValidationResult(errors);

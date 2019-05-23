@@ -56,7 +56,7 @@ public class LoginController implements Initializable {
                         task.run();
                         Stage primaryStage = (Stage) this.signBtn.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("../calendar/MainView.fxml"), this.bundle);
-                        primaryStage.setScene(new Scene(root,960, 680));
+                        primaryStage.setScene(new Scene(root,960, 720));
                     } else {
                         throw new IncorrectUserNameOrPasswordException(this.bundle.getString("LoginErrorMessage"));
                     }
