@@ -23,3 +23,5 @@ out/**/*.jar
 hs_err_pid*
 out/*
 .idea/*
+/nbproject/private/
+/build/
