@@ -175,7 +175,7 @@ public class WeeklyCalendarController extends CalendarView implements Initializa
                             createEditAppointmentStage.initOwner(primaryStage);
                             Parent root = loader.load();
                             createEditAppointmentStage.setTitle("Create/Edit Appointment");
-                            createEditAppointmentStage.setScene(new Scene(root, 560, 580));
+                            createEditAppointmentStage.setScene(new Scene(root, 640, 700));
                             createEditAppointmentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                                 public void handle(WindowEvent we) {
                                     renderWeeklyCalendar();

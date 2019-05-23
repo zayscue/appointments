@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.converter.LocalTimeStringConverter;
@@ -64,6 +65,10 @@ public class AppointmentController implements Initializable {
     @FXML
     private TextField endTimeTextField;
     @FXML
+    private Text errorMessageText;
+    @FXML
+    private Button deleteBtn;
+    @FXML
     private Button saveBtn;
     @FXML
     private Button cancelBtn;
@@ -74,7 +79,9 @@ public class AppointmentController implements Initializable {
         viewModel = new AppointmentViewModel();
         this.appointments = new AppointmentRepository();
         this.customerRepository = new CustomerRepository();
-        // Only show acitve customers
+        // Building on my object type stream from the database
+        // I used a filter and a collect to map the results to an observableArrayList
+        // so they could be bound to a combo box.
         this.customers = this.customerRepository.getAll()
                 .filter(customer -> customer.isActive())
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -101,6 +108,9 @@ public class AppointmentController implements Initializable {
 
     public void setAppointment(Appointment appointment) {
         this.viewModel.setAppointment(appointment);
+        if (this.viewModel.getAppointment().getAppointmentId() > 0) {
+            this.deleteBtn.setVisible(true);
+        }
         if (appointment.getCustomerId() > 0) {
             // Query customer by id from the observable list of customers
             Optional<Customer> customer = this.customers
@@ -190,4 +200,17 @@ public class AppointmentController implements Initializable {
         createEditAppointmentStage.close();
     }
 
+    @FXML
+    private void onDeleteBtnClicked(ActionEvent actionEvent) {
+        try {
+            Appointment appointment = this.viewModel.getAppointment();
+            this.appointments.delete(appointment.getAppointmentId());
+            this.appointments.save();
+            Stage createEditAppointmentStage = (Stage) this.cancelBtn.getScene().getWindow();
+            createEditAppointmentStage.getOnCloseRequest().handle(new WindowEvent(createEditAppointmentStage, WINDOW_CLOSE_REQUEST));
+            createEditAppointmentStage.close();
+        } catch (SQLException e) {
+            this.errorMessageText.setText("There an issue occurred while trying to delete this appointment from the database.");
+        }
+    }
 }

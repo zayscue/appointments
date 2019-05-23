@@ -25,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -70,6 +71,8 @@ public class CustomersController implements Initializable {
     private TextField customerNameTextField;
     @FXML
     private CheckBox customerActiveCheckBox;
+    @FXML
+    private Text errorMessageTxt;
     @FXML
     private Button backBtn;
     @FXML
@@ -239,13 +242,13 @@ public class CustomersController implements Initializable {
         try {
             Address address = this.viewModel.getAddress();
             if (address != null) {
+                address.setCityId(city.getCityId());
                 ValidationResult validationResult = address.validate();
                 if (!validationResult.isValid()) {
                     throw new InvalidAddressDataException(validationResult);
                 }
                 address.setLastUpdate(currentTimestamp);
                 address.setLastUpdateBy(currentUser);
-                address.setCityId(city.getCityId());
                 if (address.getAddressId() > 0) {
                     this.addresses.update(address);
                     this.addresses.save();
@@ -261,6 +264,7 @@ public class CustomersController implements Initializable {
 
             Customer customer = this.viewModel.getCustomer();
             if (customer != null) {
+                customer.setAddressId(address.getAddressId());
                 ValidationResult validationResult = customer.validate();
                 if (!validationResult.isValid()) {
                     throw new InvalidCustomerDataException(validationResult);
@@ -273,7 +277,6 @@ public class CustomersController implements Initializable {
                 } else {
                     customer.setCreateDate(currentDate);
                     customer.setCreatedBy(currentUser);
-                    customer.setAddressId(address.getAddressId());
                     this.customers.add(customer);
                     this.customers.save();
                     this.customersObservableList.add(customer);
@@ -283,17 +286,9 @@ public class CustomersController implements Initializable {
                 throw new InvalidCustomerDataException();
             }
         } catch (InvalidAddressDataException invalidAddress) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Ooops, there was an error!");
-            alert.setContentText(invalidAddress.getMessage());
-            alert.showAndWait();
+            this.errorMessageTxt.setText(invalidAddress.getMessage());
         } catch (InvalidCustomerDataException invalidCustomer) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Ooops, there was an error!");
-            alert.setContentText(invalidCustomer.getMessage());
-            alert.showAndWait();
+            this.errorMessageTxt.setText(invalidCustomer.getMessage());
         }
     }
 

@@ -50,7 +50,7 @@ public class AppointmentsUI extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("./login/LoginView.fxml"), AppointmentsUI.Resources);
         VBox vb = new VBox(root);
         stage.setTitle(windowTitle);
-        stage.setScene(new Scene(vb, 960, 680));
+        stage.setScene(new Scene(vb, 960, 720));
         stage.show();
     }
 

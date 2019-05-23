@@ -22,6 +22,9 @@ public class AddressRepository extends RepositoryBase<Address> {
 
     @Override
     public Stream<Address> getAll() {
+        // This use of the stream api is was my attempt to mimic
+        // modern ORM functionality in which you can map a result set to a stream
+        // of a specific object type.
         return SQL.stream(super.connection,
                 "SELECT addressId, " +
                             "address, " +
